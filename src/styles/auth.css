@@ -1,26 +1,50 @@
 .auth-modal-overlay {
-  position: fixed; top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(40,45,53,0.13);
+  position: fixed;
+  inset: 0;
+  background: rgba(17, 24, 39, 0.35);
   z-index: 1400;
+  overflow-y: auto;
+  overflow-x: hidden;
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: flex-start;
+  padding: 18px 12px;
 }
+
+.auth-modal {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 18px 55px rgba(0, 0, 0, 0.16);
+  width: min(420px, 100%);
+  max-height: calc(100vh - 36px);
+  overflow-y: auto;
+  padding: 28px 22px 20px 22px;
+  margin: 0 auto;
+}
+
 .auth-modal {
   background: #fff;
   border-radius: 20px;
-  box-shadow: 0 10px 36px 8px rgba(174,246,207,0.14), 0 2px 8px #b0e5d2;
+  box-shadow:
+    0 10px 36px 8px rgba(174, 246, 207, 0.14),
+    0 2px 8px #b0e5d2;
   min-width: 300px;
   max-width: 90vw;
   padding: 34px 28px 20px 28px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  animation: popup-in 0.34s cubic-bezier(.25,.46,.45,.94);
+  animation: popup-in 0.34s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 @keyframes popup-in {
-  0% { transform: scale(0.7); opacity: 0; }
-  100% { transform: scale(1); opacity: 1; }
+  0% {
+    transform: scale(0.7);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 .modal-header {
   display: flex;
@@ -29,7 +53,8 @@
   margin-bottom: 7px;
 }
 .modal-logo {
-  width: 54px; height: 54px;
+  width: 54px;
+  height: 54px;
   border-radius: 12px;
   margin-bottom: 7px;
 }
@@ -83,14 +108,16 @@
   padding: 12px 0;
   border: none;
   border-radius: 7px;
-  background:rgb(197, 138, 29);
+  background: rgb(197, 138, 29);
   color: #232323;
   font-weight: bold;
   font-size: 1.09rem;
   cursor: pointer;
   box-shadow: 0 2px 12px #e7eedb80;
   margin-bottom: 6px;
-  transition: background 0.18s, color 0.18s;
+  transition:
+    background 0.18s,
+    color 0.18s;
 }
 .auth-btn:hover {
   background-color: black;
@@ -136,11 +163,13 @@
 .switch-btn:hover {
   color: #ff9409;
 }
-@media (max-width:520px) {
+@media (max-width: 520px) {
   .auth-modal {
     min-width: 97vw;
     padding: 14px 3vw 15px 3vw;
     border-radius: 14px;
   }
-  .modal-title { font-size: 1rem; }
+  .modal-title {
+    font-size: 1rem;
+  }
 }
