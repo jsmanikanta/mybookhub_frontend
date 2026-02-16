@@ -52,7 +52,7 @@ function Login() {
 
       if (data?.success && data?.token) {
         localStorage.setItem("token", data.token);
-        navigate("/profile", { replace: true });
+        navigate("/", { replace: true });
         window.location.reload();
       } else {
         setErrorMsg(data?.error || "Login failed. Please try again.");
