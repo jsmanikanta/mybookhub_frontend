@@ -70,7 +70,7 @@ function BottomNav() {
         className={`nav-item ${isActive("/orderprints") ? "active" : ""}`}
         aria-label="Print"
         onClick={() =>
-          (window.location.href = "https://printkart.onrender.com")
+          (window.location.href = "https://printkart.mybookhub.store/")
         }
       >
         <img src="/images/print-icon.jpeg" alt="Print" />
