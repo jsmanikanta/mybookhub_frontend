@@ -181,7 +181,6 @@ export default function SellBooks() {
           photo: "Only image files allowed",
         }));
       if (file.size > 5 * 1024 * 1024) {
-        // 5MB
         alert("Image size exceeds 5MB. Please choose a smaller file.");
         return setErrors((prev) => ({
           ...prev,

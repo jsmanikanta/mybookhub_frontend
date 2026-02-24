@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-
 import { api_path } from "../data";
 import "./styles/auth.css";
 import logoImg from "/images/logo.png";
@@ -9,47 +8,36 @@ import Loader from "./Loading";
 
 function Login() {
   const navigate = useNavigate();
-
   const [inputs, setInputs] = useState({ credential: "", password: "" });
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
-
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) navigate("/profile", { replace: true });
   }, [navigate]);
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setInputs((prev) => ({ ...prev, [name]: value }));
     if (errorMsg) setErrorMsg("");
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const credential = inputs.credential.trim();
     const password = inputs.password;
-
     if (!credential || !password) {
       setErrorMsg("Please enter your email/mobile and password.");
       return;
     }
-
     setLoading(true);
     setErrorMsg("");
-
     try {
       const url = `${api_path}/user/login`;
-
       const res = await axios.post(
         url,
         { identifier: credential, password },
         { headers: { "Content-Type": "application/json" } },
       );
-
       const data = res?.data;
-
       if (data?.success && data?.token) {
         localStorage.setItem("token", data.token);
         navigate("/", { replace: true });

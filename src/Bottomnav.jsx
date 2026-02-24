@@ -41,7 +41,7 @@ function BottomNav() {
 
       <button
         className={`nav-item ${isActive("/my-book") ? "active" : ""}`}
-        onClick={() => navigate("/soon")}
+        onClick={() => navigate("/mybooks")}
         aria-label="My book"
       >
         <img src="/images/my-book-icon.png" alt="My book" />

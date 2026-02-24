@@ -5,7 +5,7 @@ const ThankYouPageHub = () => {
   const navigate = useNavigate();
 
   const handleGoHome = () => {
-    navigate("/");
+    navigate("/mybooks");
   };
 
   return (
@@ -13,13 +13,15 @@ const ThankYouPageHub = () => {
       <style jsx>{`
         .thankyou-hub-page {
           min-height: 100vh;
-          background-color:white ;
+          background-color: white;
           display: flex;
           flex-direction: column;
           align-items: center;
           justify-content: center;
           padding: 20px;
-          font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', system-ui, sans-serif;
+          font-family:
+            -apple-system, BlinkMacSystemFont, "SF Pro Display", system-ui,
+            sans-serif;
           position: relative;
           overflow: hidden;
           margin: 0;
@@ -44,7 +46,7 @@ const ThankYouPageHub = () => {
           border-radius: 24px;
           padding: 48px 32px;
           text-align: center;
-          box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+          box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
           max-width: 360px;
           width: 100%;
           position: relative;
@@ -62,9 +64,17 @@ const ThankYouPageHub = () => {
         }
 
         @keyframes bounceIn {
-          0% { transform: scale(0); opacity: 0; }
-          50% { transform: scale(1.2); }
-          100% { transform: scale(1); opacity: 1; }
+          0% {
+            transform: scale(0);
+            opacity: 0;
+          }
+          50% {
+            transform: scale(1.2);
+          }
+          100% {
+            transform: scale(1);
+            opacity: 1;
+          }
         }
 
         .checkmark-svg {
@@ -76,7 +86,7 @@ const ThankYouPageHub = () => {
           cx: 28;
           cy: 28;
           r: 25;
-          fill: #10B981;
+          fill: #10b981;
         }
 
         .checkmark-path {
@@ -169,7 +179,7 @@ const ThankYouPageHub = () => {
 
         .thankyou-hub-btn {
           width: 100%;
-          background-color:rgb(197, 138, 29);
+          background-color: rgb(197, 138, 29);
           color: white;
           border: none;
           padding: 18px;
@@ -196,11 +206,11 @@ const ThankYouPageHub = () => {
             padding: 40px 24px;
             margin: 10px;
           }
-          
+
           .thankyou-hub-title {
             font-size: 24px;
           }
-          
+
           .hub-logo-img {
             height: 28px;
           }
@@ -213,11 +223,8 @@ const ThankYouPageHub = () => {
           <div className="thankyou-hub-checkmark">
             <div className="checkmark-bg">
               <svg className="checkmark-svg" viewBox="0 0 56 56" fill="none">
-                <circle cx="28" cy="28" r="25" fill="#10B981"/>
-                <path 
-                  className="checkmark-path"
-                  d="M17 28L24 35L39 20" 
-                />
+                <circle cx="28" cy="28" r="25" fill="#10B981" />
+                <path className="checkmark-path" d="M17 28L24 35L39 20" />
               </svg>
             </div>
           </div>
@@ -234,7 +241,7 @@ const ThankYouPageHub = () => {
                 <div className="status-desc">We will call you</div>
               </div>
             </div>
-            
+
             <div className="status-card">
               <div className="status-icon-2">⏰</div>
               <div className="status-content">

@@ -24,10 +24,9 @@ import Addlocation from "./Addlocation";
 import Settings from "./Settings";
 import StudentInformation from "./Studentinfo";
 import FAQ from "./Faq";
+import MyListings from "./Mybooks";
 
 function App() {
-  const [orderSummaryBookId, setOrderSummaryBookId] = useState(null);
-  const handleCloseOrderSummary = () => setOrderSummaryBookId(null);
   return (
     <>
       <Header />
@@ -51,6 +50,7 @@ function App() {
         <Route path="/settings" element={<Settings />} />
         <Route path="/student-details" element={<StudentInformation />} />
         <Route path="/faq" element={<FAQ />} />
+        <Route path="/mybooks" element={<MyListings/>}/>
       </Routes>
       <BottomNav />
       <Footer />
