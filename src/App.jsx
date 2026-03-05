@@ -11,7 +11,6 @@ import SellBooks from "./Sellbooks";
 import Header from "./Header";
 import BottomNav from "./Bottomnav";
 import Footer from "./Footer";
-import AdminPrints from "./AdminPrints";
 import AdminBooks from "./AdminBooks";
 import Categories from "./Categerioes";
 import VideoHelpSection from "./Help";
@@ -37,8 +36,7 @@ function App() {
         <Route path="/prints-cart" element={<Cart />} />
         <Route path="/forgotpassword" element={<ForgotPassword />} />
         <Route path="/sellbook" element={<SellBooks />} />
-        <Route path="/adminprints" element={<AdminPrints />} />
-        <Route path="/adminbooks" element={<AdminBooks />} />
+        <Route path="/admin" element={<AdminBooks />} />
         <Route path="/all-categories" element={<Categories />} />
         <Route path="/help" element={<VideoHelpSection />} />
         <Route path="/soon" element={<ComingSoon />} />
@@ -50,7 +48,7 @@ function App() {
         <Route path="/settings" element={<Settings />} />
         <Route path="/student-details" element={<StudentInformation />} />
         <Route path="/faq" element={<FAQ />} />
-        <Route path="/mybooks" element={<MyListings/>}/>
+        <Route path="/mybooks" element={<MyListings />} />
       </Routes>
       <BottomNav />
       <Footer />

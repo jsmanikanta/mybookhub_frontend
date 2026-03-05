@@ -15,9 +15,7 @@ export default function AdminBooks({ onGoToPrintOrders }) {
   const [editStates, setEditStates] = useState({});
 
   const navigate = useNavigate();
-  const Prints = () => {
-    navigate("/adminprints");
-  };
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -110,14 +108,6 @@ export default function AdminBooks({ onGoToPrintOrders }) {
           />
           <button type="submit" className="admin-btn" disabled={loading}>
             {loading ? <Loader /> : "Login"}
-          </button>
-          <button
-            type="button"
-            className="admin-btn"
-            style={{ marginTop: "10px" }}
-            onClick={Prints}
-          >
-            Go to Print Orders
           </button>
         </form>
       </div>

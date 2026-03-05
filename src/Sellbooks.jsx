@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import "./styles/sellbook.css";
 
 const categories = [
@@ -101,8 +102,51 @@ const conditions = [
   "Fair",
   "Poor",
 ];
+
+const normalizeStr = (x) =>
+  typeof x === "string" ? x.trim() : x != null ? String(x).trim() : "";
+
+const buildLocationString = ({
+  address,
+  landmark,
+  district,
+  state,
+  pincode,
+}) => {
+  const parts = [address, landmark, district, state]
+    .map(normalizeStr)
+    .filter(Boolean);
+
+  const pin = normalizeStr(pincode);
+  if (pin) parts.push(pin);
+
+  return parts.join(", ");
+};
+
+// ✅ India PIN code API (simple + reliable)
+// If you already have your own backend pincode API, replace this URL with yours.
+const fetchPincodeDetails = async (pincode) => {
+  const pin = String(pincode || "").trim();
+  if (!/^\d{6}$/.test(pin)) return null;
+
+  const url = `https://api.postalpincode.in/pincode/${pin}`;
+  const res = await axios.get(url);
+
+  const row = Array.isArray(res.data) ? res.data[0] : null;
+  const postOffice = row?.PostOffice?.[0];
+
+  if (!postOffice) return null;
+
+  return {
+    district: postOffice.District || "",
+    state: postOffice.State || "",
+  };
+};
+
 export default function SellBooks() {
   const navigate = useNavigate();
+
+  // ✅ keep location as string (your backend schema expects String)
   const [formData, setFormData] = useState({
     name: "",
     price: "",
@@ -110,10 +154,23 @@ export default function SellBooks() {
     subcategory: "",
     condition: "",
     description: "",
-    location: "New Delhi, India",
+    location: "", // this will be auto-built from locationInputs
     selltype: "sell",
     soldstatus: "Instock",
   });
+
+  // ✅ new detailed inputs (all will be merged into formData.location)
+  const [locationInputs, setLocationInputs] = useState({
+    address: "",
+    landmark: "",
+    district: "",
+    state: "",
+    pincode: "",
+  });
+
+  const [pinLoading, setPinLoading] = useState(false);
+  const [pinError, setPinError] = useState("");
+
   const [photo, setPhoto] = useState(null);
   const [preview, setPreview] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -126,28 +183,106 @@ export default function SellBooks() {
     };
   }, [preview]);
 
+  // ✅ whenever locationInputs changes, rebuild location string automatically
+  useEffect(() => {
+    const loc = buildLocationString(locationInputs);
+    setFormData((prev) => ({ ...prev, location: loc }));
+  }, [locationInputs]);
+
+  // ✅ PINCODE AUTO-DETECT (debounced)
+  useEffect(() => {
+    const pin = normalizeStr(locationInputs.pincode);
+    setPinError("");
+
+    if (!pin) return;
+    if (!/^\d{0,6}$/.test(pin)) {
+      setPinError("Pincode must contain only digits.");
+      return;
+    }
+    if (pin.length !== 6) return;
+
+    let alive = true;
+    const t = setTimeout(async () => {
+      try {
+        setPinLoading(true);
+        const details = await fetchPincodeDetails(pin);
+
+        if (!alive) return;
+
+        if (!details) {
+          setPinError("Invalid pincode or no data found.");
+          return;
+        }
+
+        // ✅ auto-fill district/state (but keep address/landmark untouched)
+        setLocationInputs((prev) => ({
+          ...prev,
+          district: prev.district?.trim() ? prev.district : details.district,
+          state: prev.state?.trim() ? prev.state : details.state,
+        }));
+      } catch (e) {
+        if (!alive) return;
+        setPinError(
+          e?.response?.data?.message ||
+            e?.message ||
+            "Failed to fetch pincode data.",
+        );
+      } finally {
+        if (alive) setPinLoading(false);
+      }
+    }, 450);
+
+    return () => {
+      alive = false;
+      clearTimeout(t);
+    };
+  }, [locationInputs.pincode]);
+
   const validateForm = useCallback(() => {
     const newErrors = {};
+
     if (!formData.name.trim()) newErrors.name = "Book name is required";
     else if (formData.name.trim().length < 2)
       newErrors.name = "Book name must be at least 2 characters";
+
     if (!formData.category) newErrors.category = "Category is required";
     if (!formData.subcategory)
       newErrors.subcategory = "Subcategory is required";
     if (!formData.condition) newErrors.condition = "Condition is required";
+
+    if (!formData.description.trim())
+      newErrors.description = "Description is required";
     else if (formData.description.trim().length < 10)
       newErrors.description = "Description must be at least 10 characters";
+
+    // ✅ validate detailed location fields
+    if (!normalizeStr(locationInputs.address))
+      newErrors.address = "Address is required";
+    if (!normalizeStr(locationInputs.district))
+      newErrors.district = "District is required";
+    if (!normalizeStr(locationInputs.state))
+      newErrors.state = "State is required";
+
+    const pin = normalizeStr(locationInputs.pincode);
+    if (!pin) newErrors.pincode = "Pincode is required";
+    else if (!/^\d{6}$/.test(pin))
+      newErrors.pincode = "Pincode must be 6 digits";
+
+    // ✅ location string should not be empty
     if (!formData.location.trim()) newErrors.location = "Location is required";
+
     if (
       formData.selltype === "sell" &&
       (!formData.price || Number(formData.price) <= 0)
     ) {
       newErrors.price = "Valid price is required";
     }
+
     if (!photo) newErrors.photo = "Book photo is required";
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
-  }, [formData, photo]);
+  }, [formData, photo, locationInputs]);
 
   const handleInputChange = useCallback((e) => {
     const { name, value } = e.target;
@@ -202,6 +337,19 @@ export default function SellBooks() {
     setErrors((prev) => ({ ...prev, photo: "Book photo is required" }));
   }, [preview]);
 
+  const handleLocationChange = useCallback((e) => {
+    const { name, value } = e.target;
+
+    setLocationInputs((prev) => ({
+      ...prev,
+      [name]:
+        name === "pincode" ? value.replace(/[^\d]/g, "").slice(0, 6) : value,
+    }));
+
+    setErrors((prev) => ({ ...prev, [name]: "", location: "" }));
+    if (name === "pincode") setPinError("");
+  }, []);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateForm()) {
@@ -234,7 +382,11 @@ export default function SellBooks() {
       submitData.append("subcategeory", formData.subcategory);
       submitData.append("condition", formData.condition);
       submitData.append("description", formData.description.trim());
+
+      // ✅ store ALL location inputs into ONE string field (backend expects String)
+      // Example: "H-No 12-3, Near Temple, Hyderabad, Telangana, 500081"
       submitData.append("location", formData.location.trim());
+
       submitData.append("selltype", formData.selltype);
       submitData.append("soldstatus", formData.soldstatus);
       if (photo) submitData.append("image", photo);
@@ -244,16 +396,15 @@ export default function SellBooks() {
         {
           method: "POST",
           signal: controller.signal,
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          headers: { Authorization: `Bearer ${token}` },
           body: submitData,
         },
       );
 
       if (response.ok) {
-        const data = await response.json();
+        await response.json();
         alert("Book listed successfully!");
+
         setFormData({
           name: "",
           price: "",
@@ -265,6 +416,15 @@ export default function SellBooks() {
           selltype: "sell",
           soldstatus: "Instock",
         });
+
+        setLocationInputs({
+          address: "",
+          landmark: "",
+          district: "",
+          state: "",
+          pincode: "",
+        });
+
         setPhoto(null);
         if (preview) URL.revokeObjectURL(preview);
         setPreview(null);
@@ -308,6 +468,7 @@ export default function SellBooks() {
         </div>
       ) : (
         <form className="sellbooks-form" onSubmit={handleSubmit}>
+          {/* PHOTO */}
           <div className="form-section">
             <h3>
               Book Photo <span className="required">*</span>
@@ -343,6 +504,7 @@ export default function SellBooks() {
             </div>
           </div>
 
+          {/* BASIC */}
           <div className="form-section">
             <h3>Basic Information</h3>
             <div className="form-row">
@@ -410,6 +572,7 @@ export default function SellBooks() {
             )}
           </div>
 
+          {/* CATEGORY */}
           <div className="form-section">
             <h3>Category & Condition</h3>
             <div className="form-row">
@@ -434,6 +597,7 @@ export default function SellBooks() {
                   <span className="error">{errors.category}</span>
                 )}
               </div>
+
               <div className="form-group">
                 <label>
                   Subcategory <span className="required">*</span>
@@ -497,6 +661,7 @@ export default function SellBooks() {
             </div>
           </div>
 
+          {/* DESCRIPTION */}
           <div className="form-section">
             <h3>Description</h3>
             <div className="form-group">
@@ -518,23 +683,95 @@ export default function SellBooks() {
             </div>
           </div>
 
+          {/* ✅ LOCATION (PINCODE AUTO DETECT) */}
           <div className="form-section">
             <h3>Location</h3>
+
             <div className="form-group">
               <label>
-                Pickup Location <span className="required">*</span>
+                Address <span className="required">*</span>
               </label>
               <input
                 type="text"
-                name="location"
-                value={formData.location}
-                onChange={handleInputChange}
-                placeholder="City, State"
-                className={errors.location ? "input-error" : ""}
+                name="address"
+                value={locationInputs.address}
+                onChange={handleLocationChange}
+                placeholder="House no, street, area"
+                className={errors.address ? "input-error" : ""}
               />
-              {errors.location && (
-                <span className="error">{errors.location}</span>
+              {errors.address && (
+                <span className="error">{errors.address}</span>
               )}
+            </div>
+
+            <div className="form-group">
+              <label>Landmark (optional)</label>
+              <input
+                type="text"
+                name="landmark"
+                value={locationInputs.landmark}
+                onChange={handleLocationChange}
+                placeholder="Near temple / bus stop etc"
+              />
+            </div>
+
+            <div className="form-row">
+              <div className="form-group">
+                <label>
+                  Pincode <span className="required">*</span>
+                </label>
+                <input
+                  type="text"
+                  name="pincode"
+                  value={locationInputs.pincode}
+                  onChange={handleLocationChange}
+                  placeholder="6-digit pincode"
+                  inputMode="numeric"
+                  className={errors.pincode ? "input-error" : ""}
+                />
+                {pinLoading ? (
+                  <span className="hint">Detecting location…</span>
+                ) : pinError ? (
+                  <span className="error">{pinError}</span>
+                ) : null}
+                {errors.pincode && (
+                  <span className="error">{errors.pincode}</span>
+                )}
+              </div>
+
+              <div className="form-group">
+                <label>
+                  District <span className="required">*</span>
+                </label>
+                <input
+                  type="text"
+                  name="district"
+                  value={locationInputs.district}
+                  onChange={handleLocationChange}
+                  placeholder="Auto from pincode"
+                  className={errors.district ? "input-error" : ""}
+                />
+                {errors.district && (
+                  <span className="error">{errors.district}</span>
+                )}
+              </div>
+            </div>
+
+            <div className="form-row">
+              <div className="form-group">
+                <label>
+                  State <span className="required">*</span>
+                </label>
+                <input
+                  type="text"
+                  name="state"
+                  value={locationInputs.state}
+                  onChange={handleLocationChange}
+                  placeholder="Auto from pincode"
+                  className={errors.state ? "input-error" : ""}
+                />
+                {errors.state && <span className="error">{errors.state}</span>}
+              </div>
             </div>
           </div>
 
@@ -550,6 +787,7 @@ export default function SellBooks() {
                   ? "Donate Book"
                   : "List Book for Sale"}
             </button>
+
             {submitStatus === "success" && (
               <p className="success-text">Book listed successfully!</p>
             )}
