@@ -23,6 +23,7 @@ import Addlocation from "./Addlocation";
 import Settings from "./Settings";
 import StudentInformation from "./Studentinfo";
 import FAQ from "./Faq";
+import AddCategoryImage from "./Addcategeory";
 import MyListings from "./Mybooks";
 
 function App() {
@@ -49,6 +50,7 @@ function App() {
         <Route path="/student-details" element={<StudentInformation />} />
         <Route path="/faq" element={<FAQ />} />
         <Route path="/mybooks" element={<MyListings />} />
+        <Route path="/addcategeory" element={<AddCategoryImage />} />
       </Routes>
       <BottomNav />
       <Footer />
