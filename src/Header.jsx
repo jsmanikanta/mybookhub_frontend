@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { api_path } from "../data";
-import "./styles/Header.css";
+import "./styles/header.css";
 
 function Header() {
   const navigate = useNavigate();
