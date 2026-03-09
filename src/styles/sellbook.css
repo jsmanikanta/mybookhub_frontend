@@ -1,3 +1,31 @@
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  width: 100%;
+  background: #f6f7fb;
+  overflow-x: hidden;
+}
+
+.sellbooks-container {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px 16px 120px;
+  min-height: 100vh;
+  box-sizing: border-box;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background: #f6f7fb;
+}
+
+.sellbooks-form {
+  background: white;
+  padding: 2.5rem;
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
 .sellbooks-container {
   max-width: 800px;
   margin: 0 auto;
@@ -184,7 +212,7 @@ input:focus, select:focus, textarea:focus {
 .submit-btn {
   width: 100%;
   padding: 1.25rem;
-  background-color: #c47b1b;
+  background-color: #f08a35;
   color: white;
   border: none;
   border-radius: 15px;

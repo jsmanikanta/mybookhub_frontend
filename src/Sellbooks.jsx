@@ -4,7 +4,7 @@ import axios from "axios";
 import "./styles/sellbook.css";
 
 const categories = [
-  "School Books (class 1-12)",
+  "School Books (Class 1-12)",
   "College & University Books",
   "Competitive Exam Books",
   "Fictional Books",
@@ -13,14 +13,15 @@ const categories = [
 ];
 
 const subcategoriesMap = {
-  "School Books (class 1-12)": [
+  "School Books (Class 1-12)": [
     "NCERT Books",
-    "State Board Books",
     "CBSE Books",
-    "Sample Papers & Workbook",
-    "English Medium Textbooks",
-    "Telugu Medium Textbooks",
-    "Hindi Medium Textbooks",
+    "ICSE Books",
+    "State Board Books",
+    "IGCSE / IB Books",
+    "Science Stream (Class 11-12)",
+    "Commerce Stream (Class 11-12)",
+    "Arts / Humanities Stream (Class 11-12)",
     "Others",
   ],
   "College & University Books": [
@@ -352,6 +353,7 @@ export default function SellBooks() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (!validateForm()) {
       setSubmitStatus("error");
       setTimeout(() => setSubmitStatus("idle"), 3000);
@@ -366,87 +368,106 @@ export default function SellBooks() {
 
     try {
       const token = localStorage.getItem("token");
+
       if (!token) {
-        alert("Please login to list books");
         navigate("/login");
         return;
       }
 
       const submitData = new FormData();
+
       submitData.append("name", formData.name.trim());
       submitData.append(
         "price",
-        formData.selltype === "donate" ? "0" : formData.price,
+        formData.selltype === "donate" ? "0" : String(formData.price).trim(),
       );
       submitData.append("categeory", formData.category);
       submitData.append("subcategeory", formData.subcategory);
       submitData.append("condition", formData.condition);
       submitData.append("description", formData.description.trim());
 
-      // ✅ store ALL location inputs into ONE string field (backend expects String)
-      // Example: "H-No 12-3, Near Temple, Hyderabad, Telangana, 500081"
+      // send individual fields required by backend
+      submitData.append("address", locationInputs.address.trim());
+      submitData.append("landmark", locationInputs.landmark.trim());
+      submitData.append("district", locationInputs.district.trim());
+      submitData.append("state", locationInputs.state.trim());
+      submitData.append("pincode", locationInputs.pincode.trim());
+
+      // optional combined location string if you still want it in DB
       submitData.append("location", formData.location.trim());
 
       submitData.append("selltype", formData.selltype);
       submitData.append("soldstatus", formData.soldstatus);
-      if (photo) submitData.append("image", photo);
+
+      if (photo) {
+        submitData.append("image", photo);
+      }
 
       const response = await fetch(
         `${import.meta.env.VITE_API_PATH}/books/sellbook`,
         {
           method: "POST",
           signal: controller.signal,
-          headers: { Authorization: `Bearer ${token}` },
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
           body: submitData,
         },
       );
 
-      if (response.ok) {
-        await response.json();
-        alert("Book listed successfully!");
+      const data = await response.json();
 
-        setFormData({
-          name: "",
-          price: "",
-          category: "",
-          subcategory: "",
-          condition: "",
-          description: "",
-          location: "",
-          selltype: "sell",
-          soldstatus: "Instock",
-        });
-
-        setLocationInputs({
-          address: "",
-          landmark: "",
-          district: "",
-          state: "",
-          pincode: "",
-        });
-
-        setPhoto(null);
-        if (preview) URL.revokeObjectURL(preview);
-        setPreview(null);
-        setErrors({});
-        setSubmitStatus("success");
-        setTimeout(() => navigate("/thankyou"), 1500);
-      } else {
-        const errorText = await response.text();
-        throw new Error(`${response.status}: ${errorText}`);
+      if (!response.ok) {
+        throw new Error(
+          data?.message || `Request failed with ${response.status}`,
+        );
       }
+
+      setFormData({
+        name: "",
+        price: "",
+        category: "",
+        subcategory: "",
+        condition: "",
+        description: "",
+        location: "",
+        selltype: "sell",
+        soldstatus: "Instock",
+      });
+
+      setLocationInputs({
+        address: "",
+        landmark: "",
+        district: "",
+        state: "",
+        pincode: "",
+      });
+
+      setPhoto(null);
+      if (preview) URL.revokeObjectURL(preview);
+      setPreview(null);
+      setErrors({});
+      setSubmitStatus("success");
+
+      setTimeout(() => navigate("/thankyou"), 1500);
     } catch (error) {
       console.error("Submit error:", error);
-      if (error.name === "AbortError")
+
+      if (error.name === "AbortError") {
         alert("Request timeout. Try a smaller image.");
-      else if (error.message.includes("401") || error.message.includes("403")) {
-        alert("Please login again.");
+      } else if (
+        error.message.includes("401") ||
+        error.message.includes("403")
+      ) {
         localStorage.removeItem("token");
         navigate("/login");
-      } else alert(`Submission failed: ${error.message}`);
+      } else {
+        alert(`Submission failed: ${error.message}`);
+      }
+
       setSubmitStatus("error");
     } finally {
-      if (timeoutId) clearTimeout(timeoutId);
+      clearTimeout(timeoutId);
       setLoading(false);
       setTimeout(() => setSubmitStatus("idle"), 3000);
     }

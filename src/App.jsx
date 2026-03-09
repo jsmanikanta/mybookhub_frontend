@@ -12,7 +12,6 @@ import Header from "./Header";
 import BottomNav from "./Bottomnav";
 import Footer from "./Footer";
 import AdminBooks from "./AdminBooks";
-import Categories from "./Categerioes";
 import VideoHelpSection from "./Help";
 import ComingSoon from "./CommingSoon";
 import CollegePYQ from "./Previouspaper";
@@ -24,6 +23,9 @@ import Settings from "./Settings";
 import StudentInformation from "./Studentinfo";
 import FAQ from "./Faq";
 import AddCategoryImage from "./Addcategeory";
+import BuyBooks from "./Categories";
+import BookDetails from "./Getbook";
+import Wishlist from "./Wishlist";
 import MyListings from "./Mybooks";
 
 function App() {
@@ -38,7 +40,6 @@ function App() {
         <Route path="/forgotpassword" element={<ForgotPassword />} />
         <Route path="/sellbook" element={<SellBooks />} />
         <Route path="/admin" element={<AdminBooks />} />
-        <Route path="/all-categories" element={<Categories />} />
         <Route path="/help" element={<VideoHelpSection />} />
         <Route path="/soon" element={<ComingSoon />} />
         <Route path="/previous-papers" element={<CollegePYQ />} />
@@ -51,6 +52,9 @@ function App() {
         <Route path="/faq" element={<FAQ />} />
         <Route path="/mybooks" element={<MyListings />} />
         <Route path="/addcategeory" element={<AddCategoryImage />} />
+        <Route path="/categories" element={<BuyBooks />} />
+        <Route path="/wishlist" element={<Wishlist />} />
+        <Route path="/books/:id" element={<BookDetails />} />
       </Routes>
       <BottomNav />
       <Footer />

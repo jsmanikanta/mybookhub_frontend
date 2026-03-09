@@ -1,176 +1,227 @@
 .profile-page {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #f7f8fb 0%, #eef1f7 100%);
   padding: 16px;
-  max-width: 520px;
-  margin: 0 auto;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
 }
 
-/* Loading */
-.profile-loading {
-  display: flex;
-  justify-content: center;
-  padding: 30px;
-}
-
-/* Login prompt */
+.profile-loading,
 .profile-login-prompt {
-  text-align: center;
-  padding: 30px;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
 }
 
 .profile-login-btn {
-  padding: 10px 16px;
-  border-radius: 10px;
-  border: none;
-  background: #111;
+  margin-top: 12px;
+  background: #ff8a2a;
   color: #fff;
-  font-weight: 600;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 10px;
   cursor: pointer;
+  font-size: 15px;
 }
 
-/* Profile Card */
-.profile-card {
-  background: #f27909;
-  border-radius: 16px;
-  padding: 16px;
+.profile-top-card {
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 18px;
+  box-shadow: 0 8px 24px rgba(20, 27, 52, 0.08);
+}
+
+.profile-top-row {
   display: flex;
+  align-items: flex-start;
   gap: 14px;
-  align-items: center;
-  box-shadow: 0 2px 10px rgba(224, 179, 13, 0.08);
 }
 
-.profile-avatar {
-  width: 76px;
-  height: 76px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.65);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 3px solid rgba(0, 0, 0, 0.15);
+.profile-avatar-wrap {
+  position: relative;
   flex-shrink: 0;
 }
 
-.profile-info {
+.profile-avatar {
+  width: 78px;
+  height: 78px;
+  border-radius: 50%;
+  background: #f7efe7;
+  border: 3px solid #f1d7c1;
   display: flex;
-  flex-direction: column;
-  gap: 4px;
+  align-items: center;
+  justify-content: center;
+}
+
+.profile-badge {
+  position: absolute;
+  right: -2px;
+  bottom: 2px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #ff7a00;
+  color: white;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #fff;
+}
+
+.profile-main-info {
+  flex: 1;
+  min-width: 0;
 }
 
 .profile-name {
-  font-size: 20px;
-  font-weight: 800;
-  color: whitesmoke;
-  letter-spacing: 0.2px;
-}
-.profile-textmain {
-  font-size: 20px;
-  font-weight: 800;
-  color: whitesmoke;
-  letter-spacing: 0.2px;
+  margin: 0;
+  font-size: 28px;
+  font-weight: 700;
+  color: #242424;
+  line-height: 1.1;
 }
 
-.profile-text {
-  font-size: 14px;
+.profile-subtitle {
+  margin: 4px 0 10px;
+  color: #6b6b6b;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.profile-contact-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #666;
+  font-size: 16px;
+  margin-bottom: 6px;
+  word-break: break-word;
+}
+
+.profile-contact-icon {
+  color: #d46f1f;
+  min-width: 18px;
+  text-align: center;
+}
+
+.profile-edit-btn {
+  border: none;
+  background: #f7e8d9;
+  color: #b56a2b;
+  padding: 8px 14px;
+  border-radius: 12px;
+  font-size: 15px;
   font-weight: 600;
-  color: #111;
-  opacity: 0.9;
+  cursor: default;
+  flex-shrink: 0;
 }
 
-.profile-texth {
-  font-size: 14px;
-  font-weight: 600;
-  color: whitesmoke;
-  opacity: 0.9;
-}
-
-/* Menu */
-.profile-menu {
+.profile-college-card {
   margin-top: 18px;
+  background: linear-gradient(90deg, #ff9f48 0%, #ff7d1f 100%);
+  color: white;
+  border-radius: 18px;
+  padding: 16px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.profile-college-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.profile-college-icon {
+  font-size: 24px;
+}
+
+.profile-college-text {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.profile-college-arrow {
+  font-size: 26px;
+  opacity: 0.95;
+  flex-shrink: 0;
+}
+
+.profile-student-grid {
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.student-box {
+  background: #f9f3ee;
+  border-radius: 16px;
+  padding: 14px 12px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  min-height: 72px;
+}
+
+.student-box-icon {
+  font-size: 18px;
+  color: #d8752d;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.student-box-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.student-box-label {
+  font-size: 14px;
+  color: #5f5f5f;
+  font-weight: 600;
+}
+
+.student-box-value {
+  font-size: 16px;
+  color: #2c2c2c;
+  font-weight: 600;
+  word-break: break-word;
+}
+
+.profile-menu {
+  margin-top: 16px;
   display: flex;
   flex-direction: column;
   gap: 14px;
 }
 
-.profile-menu-item {
-  width: 100%;
-  background: #fff;
-  border: 1px solid rgba(0, 0, 0, 0.2);
-  border-radius: 14px;
-  padding: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  cursor: pointer;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
-}
-
-.profile-menu-left {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.profile-menu-icon {
-  font-size: 18px;
-  width: 24px;
-  display: inline-flex;
-  justify-content: center;
-}
-
-.profile-menu-title {
-  font-size: 18px;
-  font-weight: 800;
-  color: #111;
-}
-
-.profile-menu-arrow {
-  font-size: 22px;
-  font-weight: 900;
-  color: #111;
-  opacity: 0.65;
-  line-height: 1;
-}
-
-.profile-menu-empty {
-  width: 18px;
-}
-
-/* Optional Stats */
-.profile-stats {
-  margin-top: 18px;
-}
-
-.profile-stat-card {
-  background: #fff;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  border-radius: 14px;
-  padding: 14px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
-}
-
-.profile-stat-title {
-  font-weight: 700;
-  margin-bottom: 6px;
-}
-
-.profile-stat-value {
-  font-weight: 900;
-  font-size: 18px;
-}
-
 .menu-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 14px 16px;
   background: #fff;
-  border-bottom: 1px solid #eee;
+  border-radius: 18px;
+  padding: 18px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 6px 18px rgba(20, 27, 52, 0.06);
   cursor: pointer;
-  transition: 0.2s ease;
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
 }
 
 .menu-item:hover {
-  background: #f5f5f5;
+  transform: translateY(-1px);
+  box-shadow: 0 10px 22px rgba(20, 27, 52, 0.09);
 }
 
 .menu-left {
@@ -180,15 +231,87 @@
 }
 
 .menu-icon {
-  font-size: 18px;
+  width: 28px;
+  text-align: center;
+  font-size: 22px;
+  color: #e37c2d;
 }
 
 .menu-title {
-  font-size: 15px;
-  font-weight: 500;
+  font-size: 18px;
+  font-weight: 600;
+  color: #363636;
 }
 
 .menu-arrow {
-  font-size: 20px;
-  color: #999;
+  font-size: 28px;
+  color: #c7c7c7;
+  line-height: 1;
+}
+
+@media (max-width: 600px) {
+  .profile-page {
+    padding: 12px;
+  }
+
+  .profile-top-card {
+    padding: 16px;
+    border-radius: 22px;
+  }
+
+  .profile-top-row {
+    gap: 10px;
+  }
+
+  .profile-avatar {
+    width: 68px;
+    height: 68px;
+  }
+
+  .profile-name {
+    font-size: 22px;
+  }
+
+  .profile-subtitle {
+    font-size: 15px;
+  }
+
+  .profile-contact-row {
+    font-size: 14px;
+  }
+
+  .profile-edit-btn {
+    font-size: 13px;
+    padding: 7px 10px;
+  }
+
+  .profile-college-text {
+    font-size: 15px;
+  }
+
+  .profile-student-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .student-box {
+    padding: 12px 10px;
+    min-height: 68px;
+  }
+
+  .student-box-label {
+    font-size: 13px;
+  }
+
+  .student-box-value {
+    font-size: 14px;
+  }
+
+  .menu-item {
+    padding: 16px 16px;
+  }
+
+  .menu-title {
+    font-size: 16px;
+  }
 }

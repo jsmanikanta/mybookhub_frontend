@@ -23,7 +23,7 @@ export default function Settings() {
   // Logout navigation
   const handleLogout = () => {
     localStorage.removeItem("token");
-    navigate("/");
+    navigate("/login");
     window.location.reload();
   };
 

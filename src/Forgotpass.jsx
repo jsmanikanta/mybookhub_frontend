@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./styles/forgotpass.css";
-import logoImg from "/images/logo.png";
+import logoImg from "/images/logo.jpeg";
 import { useNavigate } from "react-router-dom";
 import { api_path } from "../data";
 import Loader from "./Loading";
@@ -44,7 +44,8 @@ export default function ForgotPassword() {
       });
 
       const data = await res.json().catch(() => ({}));
-      if (!res.ok) throw new Error(data.error || data.message || "Unknown error");
+      if (!res.ok)
+        throw new Error(data.error || data.message || "Unknown error");
 
       setSuccess("Password reset successful! You can now login.");
       setIdentifier("");
@@ -101,7 +102,11 @@ export default function ForgotPassword() {
               {loading ? "Saving..." : "Reset Password"}
             </button>
 
-            <div className="resetpw-back" onClick={goToLogin} style={{ cursor: "pointer" }}>
+            <div
+              className="resetpw-back"
+              onClick={goToLogin}
+              style={{ cursor: "pointer" }}
+            >
               Back to Login
             </div>
           </form>

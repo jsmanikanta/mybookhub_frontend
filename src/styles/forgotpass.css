@@ -4,7 +4,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
 .resetpw-container {
@@ -24,11 +24,11 @@
 }
 .resetpw-title {
   font-weight: 800;
-  color: #12d18e;
+  color: #d7a78f;
   margin-bottom: 8px;
 }
 .resetpw-message {
-  color: #555;
+  color: #d7a78f;
   font-size: 15px;
   margin-bottom: 24px;
 }
@@ -36,15 +36,15 @@
   width: 100%;
   padding: 12px;
   margin: 10px 0 18px 0;
-  border: 1px solid #12d18e33;
+  border: 1px solid #d7a78f;
   border-radius: 12px;
   outline: none;
   font-size: 16px;
-  background: #f3fbf6;
+  background: #faf9f8;
   transition: border-color 0.3s;
 }
 .resetpw-input:focus {
-  border-color: #12d18e;
+  border-color: #d7a78f;
 }
 .resetpw-error {
   background: #ffeaea;
@@ -56,30 +56,30 @@
   border: 1px solid #fa585866;
 }
 .resetpw-success {
-  background: #eaffea;
-  color: #12d18e;
+  background: #d7a78f;
+  color: #d7a78f;
   padding: 9px 0;
   border-radius: 9px;
   font-size: 15px;
   margin-bottom: 12px;
-  border: 1px solid #12d18e66;
+  border: 1px solid #ce9273;
 }
 .resetpw-btn {
   width: 100%;
   padding: 12px 0;
-  background: #12d18e;
+  background: #d7a78f;
   color: #fff;
   font-size: 17px;
   font-weight: 600;
   border: none;
   border-radius: 12px;
   cursor: pointer;
-  box-shadow: 0 2px 8px #12d18e33;
+  box-shadow: 0 2px 8px #d7a78f;
   margin-top: 6px;
   transition: background 0.2s;
 }
 .resetpw-btn:disabled {
-  background: #8ce2bd;
+  background: #d7a78f;
   cursor: not-allowed;
 }
 .resetpw-back {

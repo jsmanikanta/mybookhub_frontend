@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import "./styles/accounts.css";
+import "./styles/cart.css";
 import Loader from "./Loading";
 import { api_path } from "../data";
 import EmptyBag from "/images/openbag.jpg";
@@ -13,25 +13,33 @@ function CartMobile() {
   const [loading, setLoading] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState(null);
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     const fetchUserProfile = async () => {
       setLoading(true);
       const token = localStorage.getItem("token");
+
       if (!token) {
         setLoading(false);
         return;
       }
+
       try {
         const response = await axios.get(`${api_path}/user/printorders`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 
-        if (response.data.user) {
+        if (response.data?.user) {
           setUser(response.data.user);
           setOrders(response.data.orders || []);
+        } else {
+          setUser(null);
+          setOrders([]);
         }
-      } catch {
+      } catch (error) {
         setUser(null);
+        setOrders([]);
         localStorage.removeItem("token");
       } finally {
         setLoading(false);
@@ -41,20 +49,87 @@ function CartMobile() {
     fetchUserProfile();
   }, []);
 
-  const navigate = useNavigate();
   const goToPrints = () => navigate("/orderprints");
 
-  if (loading)
+  const getPaymentMethod = (order) => {
+    return order.paymentMethod || order.payment || "-";
+  };
+
+  const getPaymentStatus = (order) => {
+    const status = order.paymentStatus || order.paymentstatus || "";
+
+    if (status) {
+      const normalized = String(status).toLowerCase();
+
+      if (normalized === "paid") return "Paid";
+      if (normalized === "pending") return "Pending";
+      if (normalized === "failed") return "Failed";
+
+      return status;
+    }
+
+    const method = (order.paymentMethod || order.payment || "").toLowerCase();
+    const txnId =
+      order.transactionId ||
+      order.razorpayPaymentId ||
+      order.transctionid ||
+      "";
+
+    if (
+      method === "razorpay" ||
+      method === "online" ||
+      method === "upi" ||
+      method === "card"
+    ) {
+      return txnId ? "Paid" : "Pending";
+    }
+
+    if (
+      method === "pay on delivery" ||
+      method === "cash on delivery" ||
+      method === "cod"
+    ) {
+      return "Pending";
+    }
+
+    return "-";
+  };
+
+  const getTransactionId = (order) => {
+    return (
+      order.transactionId ||
+      order.razorpayPaymentId ||
+      order.transctionid ||
+      "-"
+    );
+  };
+
+  const getDeliveryStatus = (order) => {
+    return order.deliveryStatus || order.deliverystatus || order.status || "-";
+  };
+
+  const shouldShowTransactionId = (order) => {
+    const method = (order.paymentMethod || order.payment || "").toLowerCase();
+
+    return (
+      method &&
+      method !== "pay on delivery" &&
+      method !== "cash on delivery" &&
+      method !== "cod"
+    );
+  };
+
+  if (loading) {
     return (
       <div className="orders-loading">
         <Loader />
       </div>
     );
+  }
 
   if (!user) {
     return (
-      <div className="orders-login-prompt" style={{ justifyContent: "center" }}>
-        <br />
+      <div className="orders-login-prompt cart-login-wrap">
         Please{" "}
         <a href="/login" className="orders-login-btn">
           Login
@@ -66,192 +141,247 @@ function CartMobile() {
 
   if (!selectedOrder) {
     return (
-      <div className="cart-mobile-root">
-        <header className="cart-header">
-          <span className="cart-title">My Bag</span>
-        </header>
+      <div className="cart-page">
+        <div className="cart-mobile-root">
+          <header className="cart-header">
+            <span className="cart-title">My Bag</span>
+          </header>
 
-        <div className="cart-tabs">
-          <span className="cart-tab">Books Vault</span>
-          <span className="cart-tab cart-tab-active">Print Zone</span>
-        </div>
-
-        {orders.length === 0 ? (
-          <div className="empty-bag">
-            <img src={EmptyBag} alt="Empty bag" className="empty-bag-img" />
-            <p className="empty-bag-text">
-              Don't leave me empty like this 😢 — add something cute!
-            </p>
-            <button className="cart-blue-btn" onClick={goToPrints}>
-              Start Shopping
-            </button>
+          <div className="cart-tabs cart-tabs-single">
+            <span className="cart-tab cart-tab-active">Print Zone</span>
           </div>
-        ) : (
-          <div className="cart-mobile-list">
-            {orders.map((order) => (
-              <div
-                className="cart-mobile-card"
-                key={order.id || order._id}
-                onClick={() => setSelectedOrder(order)}
-              >
-                <div className="cart-card-row">
-                  <div className="cart-card-icon-area" />
-                  <img src={prints} style={{ height: 50, width: 50 }} />
-                  <div>
-                    <div className="cart-card-title">Printouts</div>
-                    <div className="cart-card-meta">
-                      Binding: {order.binding || "None"}
+
+          {orders.length === 0 ? (
+            <div className="empty-bag">
+              <img src={EmptyBag} alt="Empty bag" className="empty-bag-img" />
+              <p className="empty-bag-text">
+                Don't leave me empty like this 😢 — add something cute!
+              </p>
+              <button className="cart-blue-btn" onClick={goToPrints}>
+                Start Shopping
+              </button>
+            </div>
+          ) : (
+            <div className="cart-mobile-list">
+              {orders.map((order) => (
+                <div
+                  className="cart-mobile-card"
+                  key={order.id || order._id}
+                  onClick={() => setSelectedOrder(order)}
+                >
+                  <div className="cart-card-row">
+                    <div className="cart-card-left">
+                      <img
+                        src={prints}
+                        alt="Printouts"
+                        className="cart-card-icon"
+                      />
+
+                      <div className="cart-card-content">
+                        <div className="cart-card-title">Printouts</div>
+                        <div className="cart-card-meta">
+                          Binding: {order.binding || "None"}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="cart-card-side">
+                      {!!order.originalprice &&
+                        Number(order.discountprice || order.originalprice) <
+                          Number(order.originalprice) && (
+                          <div className="cart-card-oldprice">
+                            ₹{order.originalprice}
+                          </div>
+                        )}
+
+                      <div className="cart-card-price">
+                        ₹{order.discountprice || order.originalprice || 0}
+                      </div>
+
+                      <div className="cart-card-qty">
+                        Qty: {order.copies || "-"}
+                      </div>
+
+                      <div className="cart-card-status">
+                        Delivery Status: {getDeliveryStatus(order)}
+                      </div>
+
+                      <div className="cart-card-status">
+                        Payment Status: {getPaymentStatus(order)}
+                      </div>
                     </div>
                   </div>
 
-                  <div className="cart-card-side">
-                    <span className="cart-card-oldprice">
-                      {order.originalprice && <>₹{order.originalprice}</>}
-                    </span>
-                    <span className="cart-card-price">
-                      ₹{order.discountprice || order.originalprice}
-                    </span>
-                    <div className="cart-card-qty">
-                      Qty: {order.copies || "-"}
-                    </div>
-                    <div className="cart-card-qty">
-                      Order Status: {order.status}
-                    </div>
-                  </div>
+                  <div className="cart-card-link">View Details →</div>
                 </div>
-
-                <div className="cart-card-link">View Details →</div>
-              </div>
-            ))}
-          </div>
-        )}
+              ))}
+            </div>
+          )}
+        </div>
       </div>
     );
   }
 
-  // ---- Screen 2: Order Details ----
   return (
-    <div className="order-detail-mobile">
-      <header className="cart-header">
-        <span className="cart-back" onClick={() => setSelectedOrder(null)}>
-          ←
-        </span>
-        <span className="cart-title">Order Details</span>
-      </header>
+    <div className="cart-page">
+      <div className="order-detail-mobile">
+        <header className="cart-header">
+          <span className="cart-back" onClick={() => setSelectedOrder(null)}>
+            ←
+          </span>
+          <span className="cart-title">Order Details</span>
+        </header>
 
-      <div className="order-detail-info">
-        <div className="detail-field">
-          <span className="detail-label">Order ID:</span>{" "}
-          {selectedOrder.id || selectedOrder._id}
-        </div>
+        <div className="order-detail-info">
+          <div className="detail-field">
+            <span className="detail-label">Order ID:</span>
+            <span className="detail-value">
+              {selectedOrder.id || selectedOrder._id}
+            </span>
+          </div>
 
-        <div className="detail-field">
-          <span className="detail-label">Name:</span> {selectedOrder.name}
-        </div>
+          <div className="detail-field">
+            <span className="detail-label">Name:</span>
+            <span className="detail-value">{selectedOrder.name || "-"}</span>
+          </div>
 
-        <div className="detail-field">
-          <span className="detail-label">Mobile:</span> {selectedOrder.mobile}
-        </div>
+          <div className="detail-field">
+            <span className="detail-label">Mobile:</span>
+            <span className="detail-value">{selectedOrder.mobile || "-"}</span>
+          </div>
 
-        <div className="detail-field">
-          <span className="detail-label">Payment Mode:</span>{" "}
-          {selectedOrder.payment}
-        </div>
+          <div className="detail-field">
+            <span className="detail-label">Payment Method:</span>
+            <span className="detail-value">
+              {getPaymentMethod(selectedOrder)}
+            </span>
+          </div>
 
-        <div className="detail-field">
-          <span className="detail-label">File:</span>{" "}
-          {selectedOrder?.file ? (
-            <a
-              href={selectedOrder.file}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              View PDF
-            </a>
-          ) : (
-            <span>No file available</span>
-          )}
-        </div>
+          <div className="detail-field">
+            <span className="detail-label">Payment Status:</span>
+            <span className="detail-value">
+              {getPaymentStatus(selectedOrder)}
+            </span>
+          </div>
 
-        <div className="detail-field">
-          <span className="detail-label">Final Price:</span> ₹
-          {selectedOrder.discountprice || selectedOrder.price}
-        </div>
-
-        <div className="detail-field">
-          <span className="detail-label">Original Price:</span> ₹
-          {selectedOrder.originalprice}
-        </div>
-
-        <div className="detail-field">
-          <span className="detail-label">Color:</span> {selectedOrder.color}
-        </div>
-
-        <div className="detail-field">
-          <span className="detail-label">Side(s):</span> {selectedOrder.sides}
-        </div>
-
-        <div className="detail-field">
-          <span className="detail-label">Binding:</span> {selectedOrder.binding}
-        </div>
-
-        <div className="detail-field">
-          <span className="detail-label">Copies:</span> {selectedOrder.copies}
-        </div>
-
-        <div className="detail-field">
-          <span className="detail-label">Address:</span>{" "}
-          {selectedOrder.address ? (
-            selectedOrder.address
-          ) : (
-            <div style={{ display: "inline-block" }}>
-              {selectedOrder.college && (
-                <div>
-                  <strong>College:</strong> {selectedOrder.college} <br />
-                </div>
-              )}
-              {selectedOrder.year && (
-                <div>
-                  <strong>Year:</strong> {selectedOrder.year} <br />
-                </div>
-              )}
-              {selectedOrder.rollno && (
-                <div>
-                  <strong>Roll No:</strong> {selectedOrder.rollno} <br />
-                </div>
-              )}
-              {selectedOrder.section && (
-                <div>
-                  <strong>Branch:</strong> {selectedOrder.section} <br />
-                </div>
-              )}
+          {shouldShowTransactionId(selectedOrder) && (
+            <div className="detail-field">
+              <span className="detail-label">Transaction ID:</span>
+              <span className="detail-value">
+                {getTransactionId(selectedOrder)}
+              </span>
             </div>
           )}
-        </div>
 
-        <div className="detail-field">
-          <span className="detail-label">Description:</span>{" "}
-          {selectedOrder.description || "-"}
-        </div>
-        <div className="detail-field">
-          <span className="detail-label">Transaction Details:</span>{" "}
-          {selectedOrder.transctionid ? (
-            <a
-              href={selectedOrder.transctionid}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              View Details
-            </a>
-          ) : (
-            <span>Pay on delivery</span>
-          )}
-        </div>
-        <div className="detail-field">
-          <span className="detail-label">Order Date:</span>{" "}
-          {selectedOrder.orderDate
-            ? new Date(selectedOrder.orderDate).toLocaleString()
-            : "-"}
+          <div className="detail-field">
+            <span className="detail-label">Delivery Status:</span>
+            <span className="detail-value">
+              {getDeliveryStatus(selectedOrder)}
+            </span>
+          </div>
+
+          <div className="detail-field">
+            <span className="detail-label">File:</span>
+            <span className="detail-value">
+              {selectedOrder?.file ? (
+                <a
+                  href={selectedOrder.file}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="detail-link"
+                >
+                  View PDF
+                </a>
+              ) : (
+                "No file available"
+              )}
+            </span>
+          </div>
+
+          <div className="detail-field">
+            <span className="detail-label">Final Price:</span>
+            <span className="detail-value">
+              ₹{selectedOrder.discountprice || selectedOrder.price || 0}
+            </span>
+          </div>
+
+          <div className="detail-field">
+            <span className="detail-label">Original Price:</span>
+            <span className="detail-value">
+              ₹{selectedOrder.originalprice || 0}
+            </span>
+          </div>
+
+          <div className="detail-field">
+            <span className="detail-label">Color:</span>
+            <span className="detail-value">{selectedOrder.color || "-"}</span>
+          </div>
+
+          <div className="detail-field">
+            <span className="detail-label">Side(s):</span>
+            <span className="detail-value">{selectedOrder.sides || "-"}</span>
+          </div>
+
+          <div className="detail-field">
+            <span className="detail-label">Binding:</span>
+            <span className="detail-value">{selectedOrder.binding || "-"}</span>
+          </div>
+
+          <div className="detail-field">
+            <span className="detail-label">Copies:</span>
+            <span className="detail-value">{selectedOrder.copies || "-"}</span>
+          </div>
+
+          <div className="detail-field">
+            <span className="detail-label">Address:</span>
+            <span className="detail-value">
+              {selectedOrder.address ? (
+                selectedOrder.address
+              ) : (
+                <span className="detail-address-block">
+                  {selectedOrder.college && (
+                    <>
+                      <strong>College:</strong> {selectedOrder.college}
+                      <br />
+                    </>
+                  )}
+                  {selectedOrder.year && (
+                    <>
+                      <strong>Year:</strong> {selectedOrder.year}
+                      <br />
+                    </>
+                  )}
+                  {selectedOrder.rollno && (
+                    <>
+                      <strong>Roll No:</strong> {selectedOrder.rollno}
+                      <br />
+                    </>
+                  )}
+                  {selectedOrder.section && (
+                    <>
+                      <strong>Branch:</strong> {selectedOrder.section}
+                    </>
+                  )}
+                </span>
+              )}
+            </span>
+          </div>
+
+          <div className="detail-field">
+            <span className="detail-label">Description:</span>
+            <span className="detail-value">
+              {selectedOrder.description || "-"}
+            </span>
+          </div>
+
+          <div className="detail-field">
+            <span className="detail-label">Order Date:</span>
+            <span className="detail-value">
+              {selectedOrder.orderDate
+                ? new Date(selectedOrder.orderDate).toLocaleString()
+                : "-"}
+            </span>
+          </div>
         </div>
       </div>
     </div>

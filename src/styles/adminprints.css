@@ -1,6 +1,7 @@
 /* Container */
 .admin-container {
-  max-width: 1200px;
+  width: 100%;
+  min-height: 100vh; /* allow page to grow */
   margin: 20px auto;
   padding: 20px;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
@@ -8,6 +9,9 @@
   background: #ffffff;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
+
+  overflow-x: auto; /* allow horizontal scroll */
+  overflow-y: auto; /* allow vertical scroll */
 }
 
 /* Headings */
@@ -78,27 +82,35 @@
 .orders-table {
   width: 100%;
   border-collapse: collapse;
-  margin-bottom: 20px;
+  margin-bottom: 40px;
   font-size: 0.9rem;
+
+  display: block; /* allow scrolling */
+  overflow-x: auto;
 }
 
+/* table header */
 .orders-table thead tr {
   background-color: #007bff;
   color: #ffffff;
 }
 
+/* cells */
 .orders-table th,
 .orders-table td {
   padding: 10px 12px;
   border: 1px solid #ddd;
   text-align: left;
   vertical-align: middle;
+  white-space: nowrap; /* prevent squeezing */
 }
 
+/* zebra rows */
 .orders-table tbody tr:nth-child(even) {
   background-color: #f9f9f9;
 }
 
+/* links */
 .orders-table a {
   color: #007bff;
   text-decoration: none;
@@ -108,7 +120,7 @@
   text-decoration: underline;
 }
 
-/* Responsive adjustments */
+/* Responsive */
 @media (max-width: 1024px) {
   .orders-table th,
   .orders-table td {
@@ -125,9 +137,6 @@
 
   .orders-table {
     font-size: 0.8rem;
-    display: block;
-    overflow-x: auto;
-    white-space: nowrap;
   }
 }
 

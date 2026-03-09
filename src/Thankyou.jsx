@@ -11,6 +11,16 @@ const ThankYouPageHub = () => {
   return (
     <>
       <style jsx>{`
+        html,
+        body,
+        #root {
+          margin: 0;
+          padding: 0;
+          width: 100%;
+          min-height: 100%;
+          background: white;
+          overflow-x: hidden;
+        }
         .thankyou-hub-page {
           min-height: 100vh;
           background-color: white;

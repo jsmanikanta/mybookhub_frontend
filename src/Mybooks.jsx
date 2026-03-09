@@ -78,7 +78,6 @@ export default function MyListings() {
     }
   };
 
-  // ✅ PATCH soldstatus
   const patchSoldStatus = async (bookId, nextStatus) => {
     if (!bookId) return;
 
@@ -201,8 +200,6 @@ export default function MyListings() {
                   </div>
 
                   <div className="ml-price">₹{priceText(b)}</div>
-
-                  {/* ✅ Added button row */}
                   <div className="ml-actions">
                     <button
                       className="ml-btn"

@@ -11,7 +11,7 @@ function BottomNav() {
     navigate("/sellbook");
   };
   const cat = () => {
-    navigate("/all-categories");
+    navigate("/categories");
   };
   const [clicked, setClicked] = useState(false);
 

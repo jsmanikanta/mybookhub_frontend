@@ -5,7 +5,10 @@ import "./styles/adminprints.css";
 import { useNavigate } from "react-router-dom";
 import Loader from "./Loading";
 
-export default function AdminBooks({ onGoToPrintOrders }) {
+const STATUS_OPTIONS = ["Pending", "Accepted", "Rejected"];
+const STOCK_OPTIONS = ["Instock", "Soldout", "Orderd"];
+
+export default function AdminBooks() {
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -15,25 +18,31 @@ export default function AdminBooks({ onGoToPrintOrders }) {
   const [editStates, setEditStates] = useState({});
 
   const navigate = useNavigate();
-  
+
+  const ADMIN_USERNAME = "admin@mybookhub.com";
+  const ADMIN_PASSWORD = "Ayush@5121";
+
+  const fetchBooks = async () => {
+    const response = await axios.get(`${api_path}/admin/books`);
+    setBooks(Array.isArray(response.data.books) ? response.data.books : []);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErrorMsg("");
-    setLoading(true);
 
-    if (username === "admin@mybookhub.com" && password === "Ayush@5121") {
-      try {
-        const response = await axios.get(`${api_path}/admin/books`);
-        setBooks(Array.isArray(response.data.books) ? response.data.books : []);
-        setViewingBooks(true);
-      } catch (error) {
-        setErrorMsg(error.response?.data?.error || "Failed to fetch books.");
-      } finally {
-        setLoading(false);
-      }
-    } else {
+    if (username !== ADMIN_USERNAME || password !== ADMIN_PASSWORD) {
       setErrorMsg("Invalid username or password");
+      return;
+    }
+
+    try {
+      setLoading(true);
+      await fetchBooks();
+      setViewingBooks(true);
+    } catch (error) {
+      setErrorMsg(error.response?.data?.error || "Failed to fetch books.");
+    } finally {
       setLoading(false);
     }
   };
@@ -48,47 +57,83 @@ export default function AdminBooks({ onGoToPrintOrders }) {
     }));
   };
 
-  // Save update for a single book
-  const handleSave = async (bookId) => {
-    const edits = editStates[bookId];
-    if (!edits || !edits.status) {
-      alert("Status is required.");
+  const handleSave = async (bookId, book) => {
+    const edits = editStates[bookId] || {};
+    const selectedStatus = edits.status ?? book.status ?? "Pending";
+    const selectedSellingPrice =
+      edits.sellingPrice ?? book.updatedPrice ?? book.price ?? "";
+    const selectedStockStatus =
+      edits.soldstatus ?? book.soldstatus ?? "Instock";
+
+    if (!STATUS_OPTIONS.includes(selectedStatus)) {
+      alert("Status must be Pending, Accepted or Rejected.");
       return;
     }
-    if (!["Accepted", "Rejected"].includes(edits.status)) {
-      alert("Status must be 'Accepted' or 'Rejected'.");
+
+    if (!STOCK_OPTIONS.includes(selectedStockStatus)) {
+      alert("Stock status must be Instock, Soldout or Orderd.");
+      return;
+    }
+
+    if (
+      selectedSellingPrice !== "" &&
+      selectedSellingPrice !== undefined &&
+      Number(selectedSellingPrice) < 0
+    ) {
+      alert("Selling price cannot be negative.");
       return;
     }
 
     try {
       setLoading(true);
+
       await axios.patch(`${api_path}/admin/book/${bookId}/status`, {
-        status: edits.status,
+        status: selectedStatus,
         sellingPrice:
-          edits.sellingPrice !== undefined
-            ? Number(edits.sellingPrice)
+          selectedSellingPrice !== "" && selectedSellingPrice !== undefined
+            ? Number(selectedSellingPrice)
             : undefined,
+        stockStatus: selectedStockStatus,
       });
 
-      const response = await axios.get(`${api_path}/admin/books`);
-      setBooks(Array.isArray(response.data.books) ? response.data.books : []);
+      await fetchBooks();
+
       setEditStates((prev) => {
-        const newEdits = { ...prev };
-        delete newEdits[bookId];
-        return newEdits;
+        const next = { ...prev };
+        delete next[bookId];
+        return next;
       });
     } catch (error) {
-      alert(error.response?.data?.error || "Failed to update book.");
+      alert(
+        error.response?.data?.error ||
+          error.response?.data?.message ||
+          "Failed to update book.",
+      );
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleLogout = () => {
+    setViewingBooks(false);
+    setUserName("");
+    setPassword("");
+    setBooks([]);
+    setErrorMsg("");
+    setEditStates({});
+  };
+
+  const goToPrintOrders = () => {
+    navigate("/adminprints");
   };
 
   if (!viewingBooks) {
     return (
       <div className="admin-container">
         <h2>Admin Login - Sold Books</h2>
+
         {errorMsg && <div className="error-msg">{errorMsg}</div>}
+
         <form onSubmit={handleSubmit} className="admin-form">
           <input
             type="text"
@@ -98,6 +143,7 @@ export default function AdminBooks({ onGoToPrintOrders }) {
             required
             className="admin-input"
           />
+
           <input
             type="password"
             placeholder="Enter the password"
@@ -105,7 +151,9 @@ export default function AdminBooks({ onGoToPrintOrders }) {
             onChange={(e) => setPassword(e.target.value)}
             required
             className="admin-input"
+            autoComplete="current-password"
           />
+
           <button type="submit" className="admin-btn" disabled={loading}>
             {loading ? <Loader /> : "Login"}
           </button>
@@ -117,13 +165,32 @@ export default function AdminBooks({ onGoToPrintOrders }) {
   return (
     <div className="admin-container">
       <h2>Sold Book Listings</h2>
-      <button
-        className="admin-btn"
-        onClick={Prints}
-        style={{ marginBottom: 20 }}
+
+      <div
+        style={{
+          display: "flex",
+          gap: "10px",
+          marginBottom: 20,
+          flexWrap: "wrap",
+        }}
       >
-        Go to Print Orders
-      </button>
+        <button
+          className="admin-btn"
+          onClick={goToPrintOrders}
+          disabled={loading}
+        >
+          Go to Print Orders
+        </button>
+
+        <button className="admin-btn" onClick={fetchBooks} disabled={loading}>
+          Refresh Books
+        </button>
+
+        <button className="admin-btn" onClick={handleLogout} disabled={loading}>
+          Logout
+        </button>
+      </div>
+
       {loading && <Loader />}
       {errorMsg && <div className="error-msg">{errorMsg}</div>}
 
@@ -133,32 +200,44 @@ export default function AdminBooks({ onGoToPrintOrders }) {
             <th>Book ID</th>
             <th>Name</th>
             <th>Image</th>
-            <th style={{ width: "140px" }}>Status</th>
-            <th>Price</th>
+            <th>Status</th>
+            <th>Original Price</th>
             <th>Selling Price</th>
+            <th>Stock Status</th>
             <th>Condition</th>
             <th>Description</th>
-            <th>Location</th>
+            <th>State</th>
+            <th>District</th>
+            <th>Pincode</th>
+            <th>Address</th>
+            <th>Landmark</th>
             <th>Category</th>
+            <th>Subcategory</th>
             <th>Sell Type</th>
+            <th>Sold Count</th>
+            <th>Date Added</th>
             <th>User Name</th>
             <th>User Email</th>
             <th>User Mobile</th>
             <th>Actions</th>
           </tr>
         </thead>
+
         <tbody>
           {books.length === 0 && (
             <tr>
-              <td colSpan="15">No books available</td>
+              <td colSpan="23">No books available</td>
             </tr>
           )}
+
           {books.map((book) => {
             const edits = editStates[book._id] || {};
+
             return (
               <tr key={book._id}>
                 <td>{book._id}</td>
                 <td>{book.name || "-"}</td>
+
                 <td>
                   {book.image ? (
                     <a
@@ -172,6 +251,7 @@ export default function AdminBooks({ onGoToPrintOrders }) {
                     "-"
                   )}
                 </td>
+
                 <td>
                   <select
                     value={edits.status ?? book.status ?? "Pending"}
@@ -179,46 +259,78 @@ export default function AdminBooks({ onGoToPrintOrders }) {
                       handleInputChange(book._id, "status", e.target.value)
                     }
                   >
-                    <option value="Pending">Pending</option>
-                    <option value="Accepted">Accepted</option>
-                    <option value="Rejected">Rejected</option>
+                    {STATUS_OPTIONS.map((status) => (
+                      <option key={status} value={status}>
+                        {status}
+                      </option>
+                    ))}
                   </select>
                 </td>
-                <td>{book.price !== "-" ? book.price : "-"}</td>
+
+                <td>{book.price ?? "-"}</td>
+
                 <td>
                   <input
                     type="number"
                     value={
                       edits.sellingPrice !== undefined
                         ? edits.sellingPrice
-                        : book.updatedPrice !== "-" &&
-                          book.updatedPrice !== undefined
-                        ? book.updatedPrice
-                        : ""
+                        : book.updatedPrice !== undefined &&
+                            book.updatedPrice !== null
+                          ? book.updatedPrice
+                          : ""
                     }
                     placeholder="Selling Price"
                     onChange={(e) =>
                       handleInputChange(
                         book._id,
                         "sellingPrice",
-                        e.target.value
+                        e.target.value,
                       )
                     }
-                    style={{ width: 100 }}
+                    style={{ width: 110 }}
                   />
                 </td>
+
+                <td>
+                  <select
+                    value={edits.soldstatus ?? book.soldstatus ?? "Instock"}
+                    onChange={(e) =>
+                      handleInputChange(book._id, "soldstatus", e.target.value)
+                    }
+                  >
+                    {STOCK_OPTIONS.map((stock) => (
+                      <option key={stock} value={stock}>
+                        {stock}
+                      </option>
+                    ))}
+                  </select>
+                </td>
+
                 <td>{book.condition || "-"}</td>
                 <td>{book.description || "-"}</td>
-                <td>{book.location || "-"}</td>
-                <td>{book.category || "-"}</td>
+                <td>{book.state || "-"}</td>
+                <td>{book.district || "-"}</td>
+                <td>{book.pincode || "-"}</td>
+                <td>{book.address || "-"}</td>
+                <td>{book.landmark || "-"}</td>
+                <td>{book.category || book.categeory || "-"}</td>
+                <td>{book.subcategory || book.subcategeory || "-"}</td>
                 <td>{book.selltype || "-"}</td>
+                <td>{book.soldcount ?? 0}</td>
+                <td>
+                  {book.date_added
+                    ? new Date(book.date_added).toLocaleString()
+                    : "-"}
+                </td>
                 <td>{book.userFullName || "-"}</td>
                 <td>{book.userEmail || "-"}</td>
                 <td>{book.userMobile || "-"}</td>
+
                 <td>
                   <button
                     className="admin-btn"
-                    onClick={() => handleSave(book._id)}
+                    onClick={() => handleSave(book._id, book)}
                     disabled={loading}
                   >
                     Save
@@ -229,21 +341,6 @@ export default function AdminBooks({ onGoToPrintOrders }) {
           })}
         </tbody>
       </table>
-
-      <button
-        className="admin-btn"
-        style={{ marginTop: 20 }}
-        onClick={() => {
-          setViewingBooks(false);
-          setUserName("");
-          setPassword("");
-          setBooks([]);
-          setErrorMsg("");
-          setEditStates({});
-        }}
-      >
-        Logout
-      </button>
     </div>
   );
 }

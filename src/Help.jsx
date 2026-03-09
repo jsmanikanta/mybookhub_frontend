@@ -8,100 +8,117 @@ function VideoHelpSection() {
       title: "Price List",
       about: "Detailed print & binding prices",
     },
-    {
-      src: "/images/Login.mp4", 
-      type: "video",
-      title: "Account Setup & Login", 
-      about: "How to Create a New Account, Login & Reset Password – Step by Step Guide.", 
-    }, 
-    {
-      src: "/images/orderprints.mp4",
-      type: "video",
-      title: "Ordering Prints",
-      about: "How to Order Printouts & Upload Files Without Any Difficulty ",
-    },
-    {
-      src: "/images/Payment.mp4", 
-      type: "video",
-      title: "How to pay", 
-      about: "How to Pay Using QR Scanner or UPI ID. "
-    }
   ];
 
   return (
-    <div>
+    <div className="help-page-root">
       <style>{`
+        html, body, #root {
+          margin: 0;
+          padding: 0;
+          width: 100%;
+          background: #ffffff;
+          overflow-x: hidden;
+        }
+
+        .help-page-root {
+          width: 100vw;
+          min-height: 100vh;
+          background: #ffffff;
+          margin: 0;
+          padding: 20px 0 40px;
+          overflow-x: hidden;
+        }
+
         .help-media-section-list {
-          padding-top: 10px;
+          width: 100%;
           display: flex;
           flex-direction: column;
-          gap: 32px;
           align-items: center;
-          width: 100%;
-          margin-bottom: 32px;
+          gap: 40px;
+          background: #ffffff;
         }
+
         .help-media-block {
           width: 100%;
-          max-width: 460px;
           display: flex;
           flex-direction: column;
           align-items: center;
+          background: #ffffff;
         }
-        .help-media {
-          width: 100%;
-          max-width: 420px;
-          aspect-ratio: 16 / 9;
+
+        /* IMAGE */
+        .help-image {
+          display: block;
+          width: min(420px, 94vw);
+          height: auto;
+          max-height: none;
           border-radius: 14px;
-          box-shadow: 0 2px 16px rgba(0,0,0,0.08);
-          object-fit: cover;
-          height: 500px;
-          border: none;
+          box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+          background: #ffffff;
+          object-fit: contain;
         }
+
+        /* VIDEO */
         .help-video {
-          background: #000;
+          display: block;
+          width: min(420px, 94vw);
+          height: auto;
+          max-height: 85vh;
+          aspect-ratio: 9 / 16;
+          border-radius: 14px;
+          box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+          background: #ffffff;
+          object-fit: contain;
         }
+
         .help-media-about {
-          margin-top: 10px;
-          font-size: 1rem;
-          color: #2573a3;
-          max-width: 420px;
+          margin-top: 12px;
+          width: min(420px, 94vw);
+          font-size: 15px;
+          color: #333;
           text-align: center;
-          line-height: 1.5;
+          line-height: 1.6;
+          padding: 0 10px;
         }
+
         .help-media-about strong {
           display: block;
-          margin-bottom: 8px;
-          font-size: 1.1rem;
+          font-size: 17px;
+          margin-bottom: 6px;
+          color: #1f2937;
         }
+
         @media (max-width: 600px) {
-          .help-media, .help-media-block { 
-            max-width: 75vw; 
+          .help-page-root {
+            padding: 14px 0 28px;
           }
-          .help-media { 
-            height: 40vw; 
-          }
-          .help-media-about { 
-            font-size: 0.99rem; 
-            padding: 0 5px; 
-          }
-        }
-        @media (max-width: 480px) {
+
           .help-media-section-list {
-            gap: 24px;
+            gap: 28px;
+          }
+
+          .help-image,
+          .help-video,
+          .help-media-about {
+            width: 94vw;
+          }
+
+          .help-media-about {
+            font-size: 14px;
+          }
+
+          .help-media-about strong {
+            font-size: 16px;
           }
         }
       `}</style>
 
       <section className="help-media-section-list">
         {mediaItems.map((item, idx) => (
-          <div className="help-media-block" key={item.src || idx}>
+          <div className="help-media-block" key={idx}>
             {item.type === "video" ? (
-              <video
-                className="help-media help-video"
-                controls
-                poster={item.poster || "/images/video-poster.jpg"}
-                preload="metadata"
-              >
+              <video className="help-video" controls preload="metadata">
                 <source src={item.src} type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
@@ -109,10 +126,11 @@ function VideoHelpSection() {
               <img
                 src={item.src}
                 alt={item.title}
-                className="help-media"
+                className="help-image"
                 loading="lazy"
               />
             )}
+
             <div className="help-media-about">
               <strong>{item.title}</strong>
               <div>{item.about}</div>

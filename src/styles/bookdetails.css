@@ -1,0 +1,353 @@
+* {
+  box-sizing: border-box;
+}
+
+.book-details-page {
+  min-height: 100vh;
+  background: #f6f6f6;
+  padding: 14px;
+}
+
+.book-details-status {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: 700;
+  color: #444;
+  background: #f6f6f6;
+}
+
+.book-details-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+}
+
+.back-btn,
+.report-btn {
+  border: none;
+  background: #fff;
+  border-radius: 12px;
+  padding: 10px 14px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+}
+
+.page-title {
+  margin: 0;
+  font-size: 34px;
+  font-weight: 800;
+  color: #222;
+}
+
+.book-details-container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.book-image-card {
+  background: #fff;
+  border-radius: 24px;
+  padding: 18px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+}
+
+.book-main-image {
+  width: 100%;
+  max-height: 420px;
+  object-fit: contain;
+  display: block;
+  border-radius: 20px;
+  background: #f8f8f8;
+}
+
+.book-price-box {
+  margin: 18px auto 10px;
+  width: fit-content;
+  background: #fff;
+  color: #111827;
+  padding: 12px 26px;
+  border-radius: 16px;
+  font-size: 34px;
+  font-weight: 800;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+}
+
+.book-name {
+  margin: 18px 0;
+  font-size: 38px;
+  line-height: 1.25;
+  font-weight: 800;
+  color: #222;
+  text-align: center;
+}
+
+.book-meta-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 22px;
+}
+
+.meta-card,
+.seller-card,
+.safety-card {
+  background: #fff;
+  border-radius: 22px;
+  padding: 20px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+}
+
+.meta-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.meta-icon {
+  width: 52px;
+  height: 52px;
+  min-width: 52px;
+  border-radius: 50%;
+  background: #e8f2ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+}
+
+.meta-label {
+  margin: 0 0 4px;
+  font-size: 14px;
+  color: #7a7a7a;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.meta-value {
+  margin: 0;
+  font-size: 18px;
+  color: #222;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.section-head h3,
+.safety-card h3 {
+  margin: 0 0 16px;
+  font-size: 26px;
+  font-weight: 800;
+  color: #222;
+}
+
+.seller-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid #ececec;
+}
+
+.seller-row:last-of-type {
+  border-bottom: none;
+}
+
+.seller-row-address {
+  align-items: flex-start;
+}
+
+.seller-label {
+  font-size: 16px;
+  font-weight: 700;
+  color: #666;
+  min-width: 90px;
+}
+
+.seller-value {
+  font-size: 17px;
+  font-weight: 600;
+  color: #222;
+  text-align: right;
+  line-height: 1.4;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.call-btn,
+.whatsapp-btn {
+  flex: 1;
+  text-decoration: none;
+  border: none;
+  border-radius: 16px;
+  padding: 14px 18px;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.call-btn {
+  background: #111827;
+  color: #fff;
+}
+
+.whatsapp-btn {
+  background: #22c55e;
+  color: #fff;
+}
+
+.disabled-btn {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.safety-card {
+  margin-top: 22px;
+  border-left: 6px solid #ff5d5d;
+}
+
+.safety-list {
+  margin: 0;
+  padding-left: 22px;
+}
+
+.safety-list li {
+  margin-bottom: 12px;
+  font-size: 17px;
+  color: #444;
+  line-height: 1.5;
+}
+
+.safety-note {
+  margin: 18px 0 0;
+  padding-top: 16px;
+  border-top: 1px solid #ececec;
+  color: #777;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+  .book-details-page {
+    padding: 10px;
+  }
+
+  .back-btn,
+  .report-btn {
+    padding: 8px 12px;
+    font-size: 14px;
+    border-radius: 10px;
+  }
+
+  .page-title {
+    font-size: 20px;
+  }
+
+  .book-image-card {
+    padding: 12px;
+    border-radius: 18px;
+  }
+
+  .book-main-image {
+    max-height: 240px;
+    border-radius: 14px;
+  }
+
+  .book-price-box {
+    margin-top: 14px;
+    font-size: 24px;
+    padding: 10px 18px;
+    border-radius: 12px;
+  }
+
+  .book-name {
+    font-size: 19px;
+    margin: 14px 0;
+    text-align: left;
+  }
+
+  .book-meta-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+
+  .meta-card,
+  .seller-card,
+  .safety-card {
+    padding: 14px;
+    border-radius: 16px;
+  }
+
+  .meta-icon {
+    width: 42px;
+    height: 42px;
+    min-width: 42px;
+    font-size: 18px;
+  }
+
+  .meta-label {
+    font-size: 11px;
+  }
+
+  .meta-value {
+    font-size: 15px;
+  }
+
+  .section-head h3,
+  .safety-card h3 {
+    font-size: 18px;
+    margin-bottom: 12px;
+  }
+
+  .seller-row {
+    padding: 10px 0;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .seller-label {
+    font-size: 13px;
+    min-width: auto;
+  }
+
+  .seller-value {
+    font-size: 14px;
+    text-align: left;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 14px;
+  }
+
+  .call-btn,
+  .whatsapp-btn {
+    font-size: 15px;
+    padding: 12px 14px;
+    border-radius: 12px;
+  }
+
+  .safety-card {
+    margin-top: 16px;
+  }
+
+  .safety-list li {
+    font-size: 14px;
+    margin-bottom: 8px;
+  }
+
+  .safety-note {
+    font-size: 12px;
+  }
+}
