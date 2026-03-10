@@ -13,12 +13,15 @@ const BookDetails = () => {
 
   const getImageUrl = (value) => {
     if (!value) return "https://via.placeholder.com/400x500?text=No+Image";
+
     if (value.startsWith("http://") || value.startsWith("https://")) {
       return value;
     }
+
     if (value.startsWith("/")) {
       return `${api_path}${value}`;
     }
+
     return `${api_path}/${value}`;
   };
 
@@ -51,8 +54,8 @@ const BookDetails = () => {
   useEffect(() => {
     const token = localStorage.getItem("token");
 
+    // 🔴 Redirect if token not found
     if (!token) {
-      setLoading(false);
       navigate("/login");
       return;
     }
@@ -71,9 +74,6 @@ const BookDetails = () => {
   if (!book) {
     return <div className="book-details-status">Book not found</div>;
   }
-  if (!user) {
-    navigate("/login");
-  }
 
   const sellerName = book?.seller?.fullname || "Seller";
   const sellerPhone = book?.seller?.mobileNumber || "";
@@ -83,7 +83,6 @@ const BookDetails = () => {
     [book?.address, book?.landmark, book?.district, book?.state, book?.pincode]
       .filter(Boolean)
       .join(", ") || "Address not available";
-
   return (
     <div className="book-details-page">
       <div className="book-details-header">

@@ -33,7 +33,7 @@ export default function StudentInformation() {
     const fetchProfile = async () => {
       if (!token) {
         setLoading(false);
-        setErrorMsg("Please login to view student information.");
+        navigate("/login");
         return;
       }
 
@@ -128,16 +128,13 @@ export default function StudentInformation() {
       setForm(updated);
       setOriginal(updated);
       setIsEdit(false);
-      setSuccessMsg("Updated successfully!",);
+      setSuccessMsg("Updated successfully!");
     } catch (err) {
       setErrorMsg(err?.response?.data?.error || "Update failed");
     } finally {
       setSaving(false);
     }
   };
-  if (!user) {
-    navigate("/login");
-  }
 
   return (
     <div className="stu-page">

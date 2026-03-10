@@ -124,8 +124,6 @@ const buildLocationString = ({
   return parts.join(", ");
 };
 
-// ✅ India PIN code API (simple + reliable)
-// If you already have your own backend pincode API, replace this URL with yours.
 const fetchPincodeDetails = async (pincode) => {
   const pin = String(pincode || "").trim();
   if (!/^\d{6}$/.test(pin)) return null;
@@ -145,6 +143,7 @@ const fetchPincodeDetails = async (pincode) => {
 };
 
 export default function SellBooks() {
+  
   const navigate = useNavigate();
 
   // ✅ keep location as string (your backend schema expects String)
@@ -184,13 +183,11 @@ export default function SellBooks() {
     };
   }, [preview]);
 
-  // ✅ whenever locationInputs changes, rebuild location string automatically
   useEffect(() => {
     const loc = buildLocationString(locationInputs);
     setFormData((prev) => ({ ...prev, location: loc }));
   }, [locationInputs]);
-
-  // ✅ PINCODE AUTO-DETECT (debounced)
+  
   useEffect(() => {
     const pin = normalizeStr(locationInputs.pincode);
     setPinError("");
@@ -214,8 +211,6 @@ export default function SellBooks() {
           setPinError("Invalid pincode or no data found.");
           return;
         }
-
-        // ✅ auto-fill district/state (but keep address/landmark untouched)
         setLocationInputs((prev) => ({
           ...prev,
           district: prev.district?.trim() ? prev.district : details.district,
@@ -472,9 +467,6 @@ export default function SellBooks() {
       setTimeout(() => setSubmitStatus("idle"), 3000);
     }
   };
-  if (!user) {
-    navigate("/login");
-  }
 
   return (
     <div className="sellbooks-container">

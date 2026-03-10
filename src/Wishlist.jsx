@@ -23,6 +23,11 @@ const Wishlist = () => {
   };
 
   const fetchWishlist = async () => {
+    if (!token) {
+      setLoading(false);
+      navigate("/login");
+      return;
+    }
     try {
       setLoading(true);
 
@@ -58,9 +63,6 @@ const Wishlist = () => {
   useEffect(() => {
     fetchWishlist();
   }, []);
-  if (!user) {
-    navigate("/login");
-  }
 
   return (
     <div className="wishlist-page">

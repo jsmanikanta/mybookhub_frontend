@@ -128,9 +128,6 @@ export default function Addlocation() {
       setSubmitLoading(false);
     }
   };
-  if (!user) {
-    navigate("/login");
-  }
 
   return (
     <div className="pa-wrap">

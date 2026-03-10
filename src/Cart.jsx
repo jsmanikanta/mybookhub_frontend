@@ -22,6 +22,7 @@ function CartMobile() {
 
       if (!token) {
         setLoading(false);
+        navigate("/login");
         return;
       }
 
@@ -125,10 +126,6 @@ function CartMobile() {
         <Loader />
       </div>
     );
-  }
-
-  if (!user) {
-    navigate("/login");
   }
 
   if (!selectedOrder) {

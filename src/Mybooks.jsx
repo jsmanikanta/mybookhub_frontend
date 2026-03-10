@@ -34,16 +34,15 @@ export default function MyListings() {
   const [error, setError] = useState("");
   const [books, setBooks] = useState([]);
 
-  // ✅ track patch loading per book
   const [updatingId, setUpdatingId] = useState(null);
 
   const fetchMyBooks = async () => {
     setLoading(true);
     setError("");
 
-    if (!API_BASE) {
-      setError("VITE_API_PATH is missing. Set it in .env and restart Vite.");
+    if (!token) {
       setLoading(false);
+      navigate("/login");
       return;
     }
 
@@ -105,8 +104,6 @@ export default function MyListings() {
         alert(data?.error || data?.message || `Update failed (${res.status})`);
         return;
       }
-
-      // ✅ refresh list
       await fetchMyBooks();
     } catch (e) {
       alert("Failed to update status (Network/CORS).");
@@ -117,16 +114,12 @@ export default function MyListings() {
 
   useEffect(() => {
     fetchMyBooks();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const visibleBooks = useMemo(
     () => books.filter((b) => getTab(b) === tab),
     [books, tab],
   );
-  if (!user) {
-    navigate("/login");
-  }
 
   return (
     <div className="ml-page">
