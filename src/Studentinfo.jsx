@@ -135,6 +135,9 @@ export default function StudentInformation() {
       setSaving(false);
     }
   };
+  if (!user) {
+    navigate("/login");
+  }
 
   return (
     <div className="stu-page">

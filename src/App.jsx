@@ -13,7 +13,6 @@ import BottomNav from "./Bottomnav";
 import Footer from "./Footer";
 import AdminBooks from "./AdminBooks";
 import VideoHelpSection from "./Help";
-import ComingSoon from "./CommingSoon";
 import CollegePYQ from "./Previouspaper";
 import ThankYouPageHub from "./Thankyou";
 import Profile from "./Profile";
@@ -41,7 +40,6 @@ function App() {
         <Route path="/sellbook" element={<SellBooks />} />
         <Route path="/admin" element={<AdminBooks />} />
         <Route path="/help" element={<VideoHelpSection />} />
-        <Route path="/soon" element={<ComingSoon />} />
         <Route path="/previous-papers" element={<CollegePYQ />} />
         <Route path="/thankyou" element={<ThankYouPageHub />} />
         <Route path="/profile" element={<Profile />} />

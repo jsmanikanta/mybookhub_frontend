@@ -472,6 +472,9 @@ export default function SellBooks() {
       setTimeout(() => setSubmitStatus("idle"), 3000);
     }
   };
+  if (!user) {
+    navigate("/login");
+  }
 
   return (
     <div className="sellbooks-container">

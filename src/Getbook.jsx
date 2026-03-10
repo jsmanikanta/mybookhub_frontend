@@ -71,6 +71,9 @@ const BookDetails = () => {
   if (!book) {
     return <div className="book-details-status">Book not found</div>;
   }
+  if (!user) {
+    navigate("/login");
+  }
 
   const sellerName = book?.seller?.fullname || "Seller";
   const sellerPhone = book?.seller?.mobileNumber || "";

@@ -128,15 +128,7 @@ function CartMobile() {
   }
 
   if (!user) {
-    return (
-      <div className="orders-login-prompt cart-login-wrap">
-        Please{" "}
-        <a href="/login" className="orders-login-btn">
-          Login
-        </a>{" "}
-        to view your profile and orders.
-      </div>
-    );
+    navigate("/login");
   }
 
   if (!selectedOrder) {

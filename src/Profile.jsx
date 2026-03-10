@@ -70,7 +70,7 @@ export default function Profile() {
   }
 
   if (!user) {
-    return null;
+    navigate("/login");
   }
 
   const name = user?.fullname || "User";

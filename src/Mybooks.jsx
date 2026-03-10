@@ -124,6 +124,9 @@ export default function MyListings() {
     () => books.filter((b) => getTab(b) === tab),
     [books, tab],
   );
+  if (!user) {
+    navigate("/login");
+  }
 
   return (
     <div className="ml-page">

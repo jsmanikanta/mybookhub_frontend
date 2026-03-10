@@ -58,6 +58,9 @@ const Wishlist = () => {
   useEffect(() => {
     fetchWishlist();
   }, []);
+  if (!user) {
+    navigate("/login");
+  }
 
   return (
     <div className="wishlist-page">

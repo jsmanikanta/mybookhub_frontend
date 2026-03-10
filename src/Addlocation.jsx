@@ -121,13 +121,16 @@ export default function Addlocation() {
         },
       );
 
-      navigate("/mylocations", { replace: true },600);
+      navigate("/mylocations", { replace: true }, 600);
     } catch (err) {
       setErrorMsg(err?.response?.data?.error || "Failed to add location.");
     } finally {
       setSubmitLoading(false);
     }
   };
+  if (!user) {
+    navigate("/login");
+  }
 
   return (
     <div className="pa-wrap">
