@@ -29,14 +29,12 @@
   cursor: pointer;
   border-radius: 14px;
 }
-
-/* ================= DESKTOP CATEGORIES ================= */
-
 .quick-nav-section {
   margin: 12px 0 34px;
   background: #dfbdac;
   border-radius: 20px;
   padding: 14px;
+  border-width: 20px;
 }
 
 .quick-nav-grid {
@@ -47,7 +45,7 @@
 }
 
 .quick-card {
-  border: none;
+  border: 2px solid #1f2937; 
   background: transparent;
   border-radius: 20px;
   padding: 18px 14px;
@@ -92,8 +90,6 @@
   word-break: break-word;
 }
 
-/* ================= PRINTKART ================= */
-
 .printkart-section {
   margin-bottom: 0;
 }
@@ -111,8 +107,6 @@
   display: block;
   object-fit: cover;
 }
-
-/* ================= SUBCATEGORIES ================= */
 
 .categories-section {
   background: #ffffff;
