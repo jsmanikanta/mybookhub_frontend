@@ -1,45 +1,63 @@
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background: black;
+  overflow-x: hidden;
+}
+
 .footer {
-  background: #111827;
-  color: #fff;
+  background: black;
+  color: white;
   padding: 24px 18px 14px;
+  width: 100%;
+  margin-top: auto;
   font-family: Arial, Helvetica, sans-serif;
 }
 
 .footer-content {
   max-width: 1200px;
   margin: auto;
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
   gap: 28px;
-  flex-wrap: wrap;
+  align-items: start;
 }
 
 .footer-section {
-  flex: 1;
-  min-width: 180px;
+  min-width: 0;
 }
 
 .footer-section h4 {
   font-size: 16px;
-  margin-bottom: 10px;
+  margin: 0 0 10px;
 }
 
 .footer-section p {
   font-size: 13px;
-  line-height: 1.5;
+  line-height: 1.6;
   color: #d1d5db;
+  margin: 0;
 }
 
 .footer-links {
   list-style: none;
   padding: 0;
+  margin: 0;
 }
 
 .footer-links li {
   font-size: 13px;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
   cursor: pointer;
   color: #d1d5db;
+  word-break: break-word;
 }
 
 .footer-links li:hover {
@@ -50,6 +68,7 @@
   color: #d1d5db;
   text-decoration: none;
   margin-left: 4px;
+  word-break: break-word;
 }
 
 .footer a:hover {
@@ -58,43 +77,50 @@
 
 .footer-bottom {
   border-top: 1px solid #374151;
-  margin-top: 14px;
-  padding-top: 8px;
+  margin-top: 16px;
+  padding-top: 10px;
   text-align: center;
   font-size: 12px;
   color: #9ca3af;
 }
 
-/* mobile */
-
+/* tablet/mobile */
 @media (max-width: 700px) {
+  .footer {
+    padding: 20px 14px 12px;
+  }
+
   .footer-content {
-    flex-direction: column;
-    gap: 18px;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px 18px;
+  }
+
+  /* About section full width */
+  .footer-section:first-child {
+    grid-column: 1 / -1;
+  }
+
+  /* Categories and Contact side by side */
+  .footer-section:nth-child(2),
+  .footer-section:nth-child(3) {
+    grid-column: auto;
   }
 
   .footer-section h4 {
     font-size: 15px;
+    margin-bottom: 8px;
   }
 
   .footer-section p,
-  .footer-links li {
+  .footer-links li,
+  .footer a {
     font-size: 12px;
+    line-height: 1.5;
   }
-}
 
-html,
-body,
-#root {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  background: black; /* same color as footer */
-}
-.footer {
-  background: black;
-  color: white;
-  padding: 24px 18px 14px;
-  width: 100%;
-  margin-top: auto;
+  .footer-bottom {
+    margin-top: 14px;
+    padding-top: 8px;
+    font-size: 11px;
+  }
 }
