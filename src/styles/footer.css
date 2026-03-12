@@ -45,7 +45,13 @@ body,
   color: #d1d5db;
   margin: 0;
 }
-
+.footer-section p a{
+  font-size: 13px;
+  line-height: 1.6;
+  color: #d1d5db;
+  margin: 0;
+  color: blue;
+}
 .footer-links {
   list-style: none;
   padding: 0;

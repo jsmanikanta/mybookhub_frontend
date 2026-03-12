@@ -46,14 +46,28 @@ function Footer() {
             <a href="mailto:support@mybookhub.store">support@mybookhub.store</a>
           </p>
 
+          <div>
+            <p>
+              Chat with Us:
+              <a
+                href="https://wa.me/919182415750"
+                className="whatsapp-contact"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                WhatsApp
+              </a>
+            </p>
+          </div>
+
           <p>
             Phone:
-            <a href="tel:+919182415750">9182415750</a>
+            <a href="tel:+918074177294"> 8074177294</a>
           </p>
 
           <p>
             Support:
-            <a href="tel:+918074177294">8074177294</a>
+            <a href="tel:+919182415750"> 9182415750</a>
           </p>
         </div>
       </div>
