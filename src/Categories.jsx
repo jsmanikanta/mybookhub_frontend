@@ -14,7 +14,6 @@ const categorySubcategoryMap = {
     "Science Stream (Class 11-12)",
     "Commerce Stream (Class 11-12)",
     "Arts / Humanities Stream (Class 11-12)",
-    "Others",
   ],
   "College & University Books": [
     "B.A",
@@ -36,7 +35,6 @@ const categorySubcategoryMap = {
     "Certificate",
     "Diploma",
     "MPhil/PhD",
-    "Others",
   ],
   "Competitive Exam Books": [
     "IIT JEE",
@@ -51,7 +49,6 @@ const categorySubcategoryMap = {
     "CLAT",
     "State PCS",
     "IELTS/ TOEFL",
-    "Others",
   ],
   "Fictional Books": [
     "Manga",
@@ -66,7 +63,6 @@ const categorySubcategoryMap = {
     "Action & Adventure",
     "Young adult",
     "Historical Fiction",
-    "Others",
   ],
   "Non-Fiction Books": [
     "Self-Help",
@@ -84,7 +80,6 @@ const categorySubcategoryMap = {
     "Transportation & Travel",
     "Dictionary",
     "Encyclopedia",
-    "Others",
   ],
 };
 
