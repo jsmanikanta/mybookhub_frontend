@@ -479,15 +479,39 @@ const BuyBooks = () => {
                     <div className="book-image-wrap">
                       <img
                         src={
-                          getImageUrl(book.originalImage || book.image) ||
-                          "https://via.placeholder.com/300x400?text=No+Image"
+                          getImageUrl(
+                            book.thumbnailImage ||
+                              book.originalImage ||
+                              book.highQualityImage ||
+                              book.image,
+                          ) ||
+                          "https://via.placeholder.com/600x800?text=No+Image"
                         }
-                        alt={book.name}
+                        srcSet={[
+                          getImageUrl(book.thumbnailImage)
+                            ? `${getImageUrl(book.thumbnailImage)} 300w`
+                            : "",
+                          getImageUrl(book.originalImage)
+                            ? `${getImageUrl(book.originalImage)} 900w`
+                            : "",
+                          getImageUrl(book.highQualityImage)
+                            ? `${getImageUrl(book.highQualityImage)} 1200w`
+                            : "",
+                          getImageUrl(book.image)
+                            ? `${getImageUrl(book.image)} 600w`
+                            : "",
+                        ]
+                          .filter(Boolean)
+                          .join(", ")}
+                        sizes="(max-width: 480px) 45vw, (max-width: 768px) 42vw, (max-width: 992px) 30vw, 250px"
+                        alt={book.name || "Book image"}
                         className="book-image"
                         loading="lazy"
+                        decoding="async"
+                        fetchPriority="low"
                         onError={(e) => {
                           e.currentTarget.src =
-                            "https://via.placeholder.com/300x400?text=No+Image";
+                            "https://via.placeholder.com/600x800?text=No+Image";
                         }}
                       />
                     </div>

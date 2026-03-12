@@ -294,26 +294,30 @@ body,
 .book-image-wrap {
   width: 100%;
   aspect-ratio: 3 / 4;
-  background: transparent;
+  background: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  border-radius: 0;
+  border-radius: 14px;
+  border: 1px solid #ececec;
 }
 
 .book-image {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   display: block;
+
+  image-rendering: auto;
+  image-rendering: -webkit-optimize-contrast;
+
   backface-visibility: hidden;
   transform: translateZ(0);
+  will-change: transform;
 }
 
-/* =========================
-   WISHLIST BUTTON
-========================= */
+
 .wishlist-btn {
   position: absolute;
   top: 10px;
@@ -525,7 +529,7 @@ body,
   .book-image {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
   }
 }
 
@@ -635,7 +639,7 @@ body,
   .book-image {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
   }
 
   .wishlist-btn {
