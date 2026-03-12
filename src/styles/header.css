@@ -7,11 +7,13 @@ body,
 #root {
   height: 100%;
   margin: 0;
-  padding: 0; /* same color as footer */
+  padding: 0;
 }
+
 body {
   padding-top: 70px;
 }
+
 .footer {
   background: black;
   color: white;
@@ -19,6 +21,9 @@ body {
   width: 100%;
   margin-top: auto;
 }
+
+/* HEADER */
+
 .mbh-header {
   width: 100%;
   background: #dfbdac;
@@ -28,11 +33,19 @@ body {
 .mbh-header-inner {
   max-width: 1400px;
   margin: 0 auto;
+  align-items: center;
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 16px;
 }
+
+.mbh-right {
+  display: flex;
+  align-items: flex-start;
+  gap: 26px;
+}
+
+/* LEFT */
 
 .mbh-left {
   display: flex;
@@ -80,6 +93,8 @@ body {
   object-fit: contain;
 }
 
+/* RIGHT */
+
 .mbh-right {
   display: flex;
   align-items: flex-start;
@@ -104,6 +119,9 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+.mbh-icon-circle {
+  padding-top: 4.5px;
 }
 
 .mbh-icon-circle img {
@@ -131,7 +149,7 @@ body {
   white-space: nowrap;
 }
 
-/* tablet */
+
 @media (max-width: 768px) {
   .mbh-header {
     padding: 12px 14px 10px;
@@ -139,6 +157,7 @@ body {
 
   .mbh-header-inner {
     gap: 10px;
+    align-items: center; /* FIX */
   }
 
   .mbh-logo {
@@ -156,12 +175,19 @@ body {
   }
 
   .mbh-right {
+    display: flex;
+    align-items: center; /* FIX */
     gap: 18px;
   }
 
-  .mbh-icon-circle {
-    width: 46px;
-    height: 46px;
+  .mbh-action {
+    min-width: 42px;
+  }
+
+  .mbh-icon-circle,
+  .mbh-icon-plain {
+    width: 28px;
+    height: 28px;
   }
 
   .mbh-icon-circle img {
@@ -170,8 +196,8 @@ body {
   }
 
   .mbh-icon-plain img {
-    width: 30px;
-    height: 30px;
+    width: 24px;
+    height: 24px;
   }
 
   .mbh-action-text {
@@ -180,14 +206,17 @@ body {
   }
 }
 
-/* mobile */
+/* ========================= */
+/* MOBILE FIX */
+/* ========================= */
+
 @media (max-width: 480px) {
   .mbh-header {
     padding: 10px 12px 8px;
   }
 
   .mbh-header-inner {
-    align-items: flex-start;
+    align-items: center; /* FIX */
     gap: 8px;
   }
 
@@ -201,12 +230,19 @@ body {
   }
 
   .mbh-right {
+    display: flex;
+    align-items: center; /* FIX */
     gap: 14px;
   }
 
-  .mbh-icon-circle {
-    width: 42px;
-    height: 42px;
+  .mbh-action {
+    min-width: 40px;
+  }
+
+  .mbh-icon-circle,
+  .mbh-icon-plain {
+    width: 24px;
+    height: 24px;
   }
 
   .mbh-icon-circle img {
@@ -215,12 +251,13 @@ body {
   }
 
   .mbh-icon-plain img {
-    width: 26px;
-    height: 26px;
+    width: 22px;
+    height: 22px;
   }
 
   .mbh-action-text {
     font-size: 12px;
     max-width: 54px;
+    margin-top: 5px;
   }
 }
