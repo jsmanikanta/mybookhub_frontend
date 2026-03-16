@@ -12,6 +12,9 @@ function CartMobile() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState(null);
+  const [cancellingOrderId, setCancellingOrderId] = useState(null);
+  const [confirmOrderId, setConfirmOrderId] = useState(null);
+  const [message, setMessage] = useState("");
 
   const navigate = useNavigate();
 
@@ -22,7 +25,6 @@ function CartMobile() {
 
       if (!token) {
         setLoading(false);
-        navigate("/login");
         return;
       }
 
@@ -39,6 +41,7 @@ function CartMobile() {
           setOrders([]);
         }
       } catch (error) {
+        console.error("Fetch user profile error:", error);
         setUser(null);
         setOrders([]);
         localStorage.removeItem("token");
@@ -120,10 +123,91 @@ function CartMobile() {
     );
   };
 
+  const canCancelOrder = (order) => {
+    return (
+      String(order?.status || "")
+        .trim()
+        .toLowerCase() === "order placed"
+    );
+  };
+
+  const handleAskCancel = (orderId, e) => {
+    e.stopPropagation();
+    setMessage("");
+    setConfirmOrderId(orderId);
+  };
+
+  const handleKeepOrder = (e) => {
+    e.stopPropagation();
+    setConfirmOrderId(null);
+  };
+
+  const handleCancelOrder = async (orderId, e) => {
+    e.stopPropagation();
+
+    const token = localStorage.getItem("token");
+    if (!token) {
+      navigate("/login");
+      return;
+    }
+
+    try {
+      setCancellingOrderId(orderId);
+      setMessage("");
+
+      const response = await axios.patch(
+        `${api_path}/orders/cancelorder/${orderId}`,
+        {},
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      );
+
+      const updatedOrder = response?.data?.order;
+
+      setOrders((prev) =>
+        prev.map((item) =>
+          (item._id || item.id) === orderId
+            ? { ...item, ...(updatedOrder || {}), status: "Cancelled" }
+            : item,
+        ),
+      );
+
+      setSelectedOrder((prev) => {
+        if (!prev) return prev;
+        if ((prev._id || prev.id) !== orderId) return prev;
+        return { ...prev, ...(updatedOrder || {}), status: "Cancelled" };
+      });
+
+      setConfirmOrderId(null);
+      setMessage(response?.data?.message || "Order cancelled successfully");
+    } catch (error) {
+      console.error("Cancel order error:", error);
+      setMessage(
+        error?.response?.data?.message ||
+          "Unable to cancel order. Please try again.",
+      );
+    } finally {
+      setCancellingOrderId(null);
+    }
+  };
+
   if (loading) {
     return (
       <div className="orders-loading">
         <Loader />
+      </div>
+    );
+  }
+
+  if (!user) {
+    return (
+      <div className="orders-login-prompt cart-login-wrap">
+        Please{" "}
+        <a href="/login" className="orders-login-btn">
+          Login
+        </a>{" "}
+        to view your profile and orders.
       </div>
     );
   }
@@ -140,6 +224,8 @@ function CartMobile() {
             <span className="cart-tab cart-tab-active">Print Zone</span>
           </div>
 
+          {message && <div className="cart-inline-message">{message}</div>}
+
           {orders.length === 0 ? (
             <div className="empty-bag">
               <img src={EmptyBag} alt="Empty bag" className="empty-bag-img" />
@@ -152,64 +238,118 @@ function CartMobile() {
             </div>
           ) : (
             <div className="cart-mobile-list">
-              {orders.map((order) => (
-                <div
-                  className="cart-mobile-card"
-                  key={order.id || order._id}
-                  onClick={() => setSelectedOrder(order)}
-                >
-                  <div className="cart-card-row">
-                    <div className="cart-card-left">
-                      <img
-                        src={prints}
-                        alt="Printouts"
-                        className="cart-card-icon"
-                      />
+              {orders.map((order) => {
+                const orderId = order._id || order.id;
+                const isCancelling = cancellingOrderId === orderId;
+                const isConfirming = confirmOrderId === orderId;
 
-                      <div className="cart-card-content">
-                        <div className="cart-card-title">Printouts</div>
-                        <div className="cart-card-meta">
-                          Binding: {order.binding || "None"}
+                return (
+                  <div
+                    className="cart-mobile-card"
+                    key={orderId}
+                    onClick={() => setSelectedOrder(order)}
+                  >
+                    <div className="cart-card-row">
+                      <div className="cart-card-left">
+                        <img
+                          src={prints}
+                          alt="Printouts"
+                          className="cart-card-icon"
+                        />
+
+                        <div className="cart-card-content">
+                          <div className="cart-card-title">Printouts</div>
+
+                          <div className="cart-card-meta">
+                            Binding: {order.binding || "None"}
+                          </div>
+
+                          {canCancelOrder(order) && !isConfirming && (
+                            <button
+                              type="button"
+                              className="cart-cancel-btn cart-cancel-btn-below"
+                              onClick={(e) => handleAskCancel(orderId, e)}
+                            >
+                              Cancel Order
+                            </button>
+                          )}
+
+                          {canCancelOrder(order) && isConfirming && (
+                            <div
+                              className="cart-cancel-confirm-box"
+                              onClick={(e) => e.stopPropagation()}
+                            >
+                              <div className="cart-cancel-confirm-text">
+                                Cancel this order?
+                              </div>
+
+                              <div className="cart-cancel-confirm-actions">
+                                <button
+                                  type="button"
+                                  className="cart-confirm-yes-btn"
+                                  onClick={(e) => handleCancelOrder(orderId, e)}
+                                  disabled={isCancelling}
+                                >
+                                  {isCancelling
+                                    ? "Cancelling..."
+                                    : "Yes, Cancel"}
+                                </button>
+
+                                <button
+                                  type="button"
+                                  className="cart-confirm-no-btn"
+                                  onClick={handleKeepOrder}
+                                  disabled={isCancelling}
+                                >
+                                  Keep Order
+                                </button>
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+
+                      <div className="cart-card-side">
+                        {!!order.originalprice &&
+                          Number(order.discountprice || order.originalprice) <
+                            Number(order.originalprice) && (
+                            <div className="cart-card-oldprice">
+                              ₹{order.originalprice}
+                            </div>
+                          )}
+
+                        <div className="cart-card-price">
+                          ₹{order.discountprice || order.originalprice || 0}
+                        </div>
+
+                        <div className="cart-card-qty">
+                          Qty: {order.copies || "-"}
+                        </div>
+
+                        <div className="cart-card-status">
+                          Delivery Status: {getDeliveryStatus(order)}
+                        </div>
+
+                        <div className="cart-card-status">
+                          Payment Status: {getPaymentStatus(order)}
                         </div>
                       </div>
                     </div>
 
-                    <div className="cart-card-side">
-                      {!!order.originalprice &&
-                        Number(order.discountprice || order.originalprice) <
-                          Number(order.originalprice) && (
-                          <div className="cart-card-oldprice">
-                            ₹{order.originalprice}
-                          </div>
-                        )}
-
-                      <div className="cart-card-price">
-                        ₹{order.discountprice || order.originalprice || 0}
-                      </div>
-
-                      <div className="cart-card-qty">
-                        Qty: {order.copies || "-"}
-                      </div>
-
-                      <div className="cart-card-status">
-                        Delivery Status: {getDeliveryStatus(order)}
-                      </div>
-
-                      <div className="cart-card-status">
-                        Payment Status: {getPaymentStatus(order)}
-                      </div>
-                    </div>
+                    <div className="cart-card-link">View Details →</div>
                   </div>
-
-                  <div className="cart-card-link">View Details →</div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           )}
         </div>
       </div>
     );
   }
+
+  const selectedOrderId = selectedOrder._id || selectedOrder.id;
+  const selectedIsConfirming = confirmOrderId === selectedOrderId;
+  const selectedIsCancelling = cancellingOrderId === selectedOrderId;
 
   return (
     <div className="cart-page">
@@ -221,12 +361,12 @@ function CartMobile() {
           <span className="cart-title">Order Details</span>
         </header>
 
+        {message && <div className="cart-inline-message">{message}</div>}
+
         <div className="order-detail-info">
           <div className="detail-field">
             <span className="detail-label">Order ID:</span>
-            <span className="detail-value">
-              {selectedOrder.id || selectedOrder._id}
-            </span>
+            <span className="detail-value">{selectedOrderId}</span>
           </div>
 
           <div className="detail-field">
@@ -371,6 +511,42 @@ function CartMobile() {
                 : "-"}
             </span>
           </div>
+
+          {canCancelOrder(selectedOrder) && !selectedIsConfirming && (
+            <button
+              type="button"
+              className="cart-cancel-btn cart-cancel-detail-btn"
+              onClick={(e) => handleAskCancel(selectedOrderId, e)}
+            >
+              Cancel Order
+            </button>
+          )}
+
+          {canCancelOrder(selectedOrder) && selectedIsConfirming && (
+            <div className="cart-cancel-confirm-box">
+              <div className="cart-cancel-confirm-text">Cancel this order?</div>
+
+              <div className="cart-cancel-confirm-actions">
+                <button
+                  type="button"
+                  className="cart-confirm-yes-btn"
+                  onClick={(e) => handleCancelOrder(selectedOrderId, e)}
+                  disabled={selectedIsCancelling}
+                >
+                  {selectedIsCancelling ? "Cancelling..." : "Yes, Cancel"}
+                </button>
+
+                <button
+                  type="button"
+                  className="cart-confirm-no-btn"
+                  onClick={(e) => handleKeepOrder(e)}
+                  disabled={selectedIsCancelling}
+                >
+                  Keep Order
+                </button>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

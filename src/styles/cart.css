@@ -335,3 +335,151 @@ body,
     min-width: 100px;
   }
 }
+.cart-cancel-btn {
+  margin-top: 10px;
+  padding: 9px 14px;
+  border: none;
+  border-radius: 10px;
+  background: #e53935;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.cart-cancel-btn:hover {
+  background: #c62828;
+}
+
+.cart-cancel-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.cart-cancel-btn-below {
+  display: inline-flex;
+  align-self: flex-start;
+  margin-top: 12px;
+}
+
+.cart-cancel-detail-btn {
+  margin-top: 16px;
+}
+
+.cart-cancel-confirm-box {
+  margin-top: 12px;
+  padding: 10px;
+  border: 1px solid #f1c0c0;
+  background: #fff5f5;
+  border-radius: 12px;
+  width: fit-content;
+}
+
+.cart-cancel-confirm-text {
+  font-size: 13px;
+  font-weight: 600;
+  color: #b71c1c;
+  margin-bottom: 8px;
+}
+
+.cart-cancel-confirm-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.cart-confirm-yes-btn,
+.cart-confirm-no-btn {
+  border: none;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.cart-confirm-yes-btn {
+  background: #e53935;
+  color: #fff;
+}
+
+.cart-confirm-no-btn {
+  background: #ececec;
+  color: #222;
+}
+
+.cart-inline-message {
+  margin: 12px 0;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: #eef7ee;
+  color: #1b5e20;
+  font-size: 13px;
+  font-weight: 600;
+}
+.cart-cancel-btn {
+  margin-top: 10px;
+  padding: 10px 14px;
+  border: none;
+  outline: none;
+  border-radius: 10px;
+  background: #e53935;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  align-self: flex-end;
+  min-width: 120px;
+}
+
+.cart-cancel-btn:hover {
+  background: #c62828;
+  transform: translateY(-1px);
+}
+
+.cart-cancel-btn:disabled {
+  background: #cfcfcf;
+  color: #666;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.cart-cancel-btn-detail {
+  margin-top: 0;
+  margin-left: 12px;
+  white-space: nowrap;
+}
+
+.detail-field-action {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.detail-field-main {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+  .cart-cancel-btn {
+    width: fit-content;
+    min-width: 110px;
+    padding: 9px 12px;
+    font-size: 12px;
+  }
+
+  .detail-field-action {
+    align-items: flex-start;
+  }
+
+  .cart-cancel-btn-detail {
+    margin-left: 0;
+  }
+}
