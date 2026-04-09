@@ -52,7 +52,7 @@ export default function Profile() {
   }, [navigate]);
 
   const goToPickupAddress = () => navigate("/mylocations");
-  const goTocart = () => navigate("/prints-cart");
+  const goTocart = () => window.open("https://printkart.mybookhub.store/#/prints-cart");
   const goToFaq = () => navigate("/faq");
   const goToSettings = () => navigate("/settings");
   const goToStudentDetails = () => navigate("/student-details");
