@@ -478,9 +478,7 @@ const BuyBooks = () => {
                   <div className="book-image-shell">
                     <div className="book-image-wrap">
                       <img
-                        src={
-                          getImageUrl(book.image)
-                        }
+                        src={getImageUrl(book.image)}
                         alt={book.name || "Book image"}
                         className="book-image"
                         loading="eager"
