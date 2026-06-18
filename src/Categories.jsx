@@ -479,36 +479,13 @@ const BuyBooks = () => {
                     <div className="book-image-wrap">
                       <img
                         src={
-                          getImageUrl(
-                            book.thumbnailImage ||
-                              book.originalImage ||
-                              book.highQualityImage ||
-                              book.image,
-                          ) ||
-                          "https://via.placeholder.com/600x800?text=No+Image"
-                        }
-                        srcSet={[
-                          getImageUrl(book.thumbnailImage)
-                            ? `${getImageUrl(book.thumbnailImage)} 300w`
-                            : "",
-                          getImageUrl(book.originalImage)
-                            ? `${getImageUrl(book.originalImage)} 900w`
-                            : "",
-                          getImageUrl(book.highQualityImage)
-                            ? `${getImageUrl(book.highQualityImage)} 1200w`
-                            : "",
                           getImageUrl(book.image)
-                            ? `${getImageUrl(book.image)} 600w`
-                            : "",
-                        ]
-                          .filter(Boolean)
-                          .join(", ")}
-                        sizes="(max-width: 480px) 45vw, (max-width: 768px) 42vw, (max-width: 992px) 30vw, 250px"
+                        }
                         alt={book.name || "Book image"}
                         className="book-image"
-                        loading="lazy"
+                        loading="eager"
                         decoding="async"
-                        fetchPriority="low"
+                        draggable={false}
                         onError={(e) => {
                           e.currentTarget.src =
                             "https://via.placeholder.com/600x800?text=No+Image";
