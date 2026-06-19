@@ -26,6 +26,7 @@ import BuyBooks from "./Categories";
 import BookDetails from "./Getbook";
 import Wishlist from "./Wishlist";
 import MyListings from "./Mybooks";
+import PrivacyPolicy from "./PrivacyPolicy";
 
 function App() {
   return (
@@ -53,6 +54,7 @@ function App() {
         <Route path="/categories" element={<BuyBooks />} />
         <Route path="/wishlist" element={<Wishlist />} />
         <Route path="/books/:id" element={<BookDetails />} />
+        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
       </Routes>
       <BottomNav />
       <Footer />

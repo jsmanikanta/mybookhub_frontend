@@ -233,12 +233,30 @@ function HomePage() {
       <div className="home-wrapper">
         <section
           className="hero-banner"
-          onClick={() => navigate("/categories")}
+          
         >
-          <img src={heroImage} alt="MyBookHub Banner" />
+          <div className="hero-content">
+            <div className="hero-left">
+              <h1>Smart Way to Buy & Sell Used Books</h1>
+              <p>Affordable Learning for Everyone</p>
+
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  navigate("/categories");
+                }}
+              >
+                Explore Collection
+              </button>
+            </div>
+
+            <div className="hero-right">
+              <img src="/images/book-exchange.jpg" alt="Book Exchange" />
+            </div>
+          </div>
         </section>
 
-        <section className="quick-nav-section" >
+        <section className="quick-nav-section">
           {loading ? (
             <div className="state-box">Loading categories...</div>
           ) : categoryRecords.length === 0 ? (
@@ -285,9 +303,10 @@ function HomePage() {
               }
             }}
           >
-            <img src={printkartBanner} alt="PrintKart Banner" />
+            <img src="../public/images/PK BANNER.png" alt="PrintKart Banner" />
           </div>
-        </section><br />
+        </section>
+        <br />
 
         <section className="categories-section">
           <div className="section-top">

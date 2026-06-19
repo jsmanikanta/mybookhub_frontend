@@ -16,23 +16,110 @@
   width: 100%;
   max-width: 1440px;
   margin: 0 auto;
-  padding: 28px 22px 40px;
+  padding: 8px 22px 20px;
 }
 
 /* HERO */
-.hero-banner img {
-  width: 100%;
-  max-width: 1400px;
-  height: auto;
-  object-fit: contain;
-  display: block;
-  cursor: pointer;
+
+.hero-banner {
+  border-radius: 24px;
+  overflow: hidden;
+  margin: 20px 0;
+  cursor: default;
+}
+
+.hero-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 220px;
+  padding: 15px 60px;
+}
+
+.hero-left {
+  max-width: 500px;
+}
+
+.hero-left h1 {
+  font-size: 3rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: #000;
+  margin-bottom: 16px;
+}
+
+.hero-left p {
+  font-size: 1.4rem;
+  color: #333;
+  margin-bottom: 30px;
+}
+
+.hero-left button {
+  background: #555;
+  color: white;
+  border: none;
+  padding: 16px 32px;
   border-radius: 14px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.hero-left button:hover {
+  background: #444;
+}
+
+.hero-right img {
+  width: 340px;
+  max-width: 100%;
+  object-fit: contain;
+}
+
+@media (max-width: 768px) {
+  .hero-content {
+    flex-direction: row; /* keep side by side */
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    gap: 20px;
+  }
+
+  .hero-left {
+    flex: 1;
+    max-width: 55%;
+  }
+
+  .hero-right {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .hero-left h1 {
+    font-size: 2rem;
+    line-height: 1.2;
+  }
+
+  .hero-left p {
+    font-size: 1rem;
+    margin-bottom: 20px;
+  }
+
+  .hero-left button {
+    padding: 12px 24px;
+    font-size: 0.9rem;
+  }
+
+  .hero-right img {
+    width: 220px;
+    max-width: 100%;
+    margin-bottom: 0;
+  }
 }
 
 /* CATEGORY QUICK NAV */
 .quick-nav-section {
-  margin: 12px 0 34px;
+  margin: 10px 0 34px;
   background: #ecd9cf;
   border-radius: 20px;
   padding: 14px;
@@ -57,7 +144,7 @@
   align-items: center;
   justify-content: flex-start;
   text-align: center;
-  height: 220px;
+  height: 200px;
   transition: transform 0.2s ease;
 }
 
@@ -66,8 +153,8 @@
 }
 
 .quick-image-wrap {
-  width: 132px;
-  height: 132px;
+  width: 100px;
+  height: 100px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -84,7 +171,7 @@
 
 .quick-text {
   font-size: 17px;
-  font-weight: 800;
+  font-weight: 500;
   line-height: 1.3;
   max-width: 210px;
   color: #111827;
@@ -99,11 +186,13 @@
 /* PRINTKART */
 .printkart-section {
   margin-bottom: 0;
+  background-color: #dfbdac;
 }
 
 .printkart-banner {
   width: 100%;
-  border-radius: 24px 24px 0 0;
+  border-radius: 24px 24px 24px 24px;
+  background-color: rgba(0, 0, 0, 0.85);
   overflow: hidden;
   cursor: pointer;
   box-shadow: 0 10px 26px rgba(0, 0, 0, 0.1);

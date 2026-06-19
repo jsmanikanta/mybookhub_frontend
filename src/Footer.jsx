@@ -2,81 +2,116 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import "./styles/footer.css";
 
-function Footer() {
+const Footer = () => {
   const navigate = useNavigate();
-
-  const soon = () => navigate("/soon");
 
   return (
     <footer className="footer">
-      <div className="footer-content">
+      <div className="footer-container">
         {/* About */}
-        <div className="footer-section">
-          <h4>MyBookHub</h4>
+        <div className="footer-section footer-about">
+          <h2>MyBookHub</h2>
+
           <p>
-            My Book Hub is an online platform designed for students to buy and
-            sell old books and order customized printouts with ease. We believe
-            that learning materials should be affordable, accessible, and
-            sustainable. Students can connect, share, and support each other
-            while saving time and money. Whether selling previous semester
-            books, ordering printouts from mobile, or donating materials to
-            those in need, we make it simple.
+            MyBookHub is a student-focused platform for buying, selling,
+            donating books, and ordering printouts. We make learning affordable,
+            accessible, and sustainable for everyone.
           </p>
         </div>
 
-        {/* Book Categories */}
+        {/* Categories */}
         <div className="footer-section">
-          <h4>Categories</h4>
-          <ul className="footer-links">
-            <li onClick={soon}>School Books</li>
-            <li onClick={soon}>Competitive Exam Books</li>
-            <li onClick={soon}>Diploma / Polytechnic</li>
-            <li onClick={soon}>College Books</li>
-            <li onClick={soon}>Fiction Books</li>
-            <li onClick={soon}>Non-Fiction Books</li>
-          </ul>
+          <h3>Categories</h3>
+
+          <p
+            className="footer-link"
+            onClick={() => navigate("/categories/school-books")}
+          >
+            School Books →
+          </p>
+
+          <p
+            className="footer-link"
+            onClick={() => navigate("/categories/competitive-exams")}
+          >
+            Competitive Exam Books →
+          </p>
+
+          <p
+            className="footer-link"
+            onClick={() => navigate("/categories/diploma-polytechnic")}
+          >
+            Diploma / Polytechnic →
+          </p>
+
+          <p
+            className="footer-link"
+            onClick={() => navigate("/categories/college-books")}
+          >
+            College Books →
+          </p>
+
+          <p
+            className="footer-link"
+            onClick={() => navigate("/categories/fiction")}
+          >
+            Fiction Books →
+          </p>
+
+          <p
+            className="footer-link"
+            onClick={() => navigate("/categories/non-fiction")}
+          >
+            Non-Fiction Books →
+          </p>
         </div>
 
         {/* Contact */}
         <div className="footer-section">
-          <h4>Contact</h4>
+          <h3>Contact</h3>
 
           <p>
-            Email:
+            📧{" "}
             <a href="mailto:support@mybookhub.store">support@mybookhub.store</a>
           </p>
 
-          <div>
-            <p>
-              Chat with Us:
-              <a
-                href="https://wa.me/919182415750"
-                className="whatsapp-contact"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                WhatsApp
-              </a>
-            </p>
-          </div>
-
           <p>
-            Phone:
-            <a href="tel:+918074177294"> 8074177294</a>
+            💬{" "}
+            <a
+              href="https://wa.me/918074177294"
+              target="_blank"
+              rel="noreferrer"
+            >
+              WhatsApp Support
+            </a>
           </p>
 
           <p>
-            Support:
-            <a href="tel:+919182415750"> 9182415750</a>
+            📞 <a href="tel:+918074177294">8074177294</a>
+          </p>
+
+          <p>
+            ☎️ <a href="tel:+919182415750">9182415750</a>
+          </p>
+
+          <p
+            className="footer-link legal-link"
+            onClick={() => navigate("/privacy-policy")}
+          >
+            Privacy Policy
           </p>
         </div>
       </div>
 
+      <div className="footer-divider"></div>
+
       <div className="footer-bottom">
-        <p>© 2026 MyBookHub</p>
+        <p>© 2026 MyBookHub. All Rights Reserved.</p>
+
+        <p>Made with ❤️ for Students Across India.</p>
       </div>
     </footer>
   );
-}
+};
 
 export default Footer;

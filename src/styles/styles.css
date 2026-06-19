@@ -211,7 +211,6 @@ body {
 
 .hero-content {
   display: flex;
-  background-color: #57c97a;
   border-radius: 5px;
   align-items: center;
   justify-content: space-between; 
