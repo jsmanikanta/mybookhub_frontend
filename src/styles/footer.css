@@ -44,7 +44,7 @@
 
 .footer-divider {
   margin-top: 15px;
-  border-top: 1px solid rgba(255,255,255,0.15);
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
 }
 
 .footer-bottom {
@@ -58,5 +58,38 @@
 }
 
 .footer-highlights {
-  display: none; 
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .footer {
+    padding: 12px 10px;
+  }
+
+  .footer-container {
+    grid-template-columns: 1.5fr 1fr 1fr; /* Still horizontal */
+    gap: 8px;
+  }
+
+  .footer-section h2 {
+    font-size: 1rem;
+    margin-bottom: 4px;
+  }
+
+  .footer-section h3 {
+    font-size: 0.8rem;
+    margin-bottom: 4px;
+  }
+
+  .footer-about p,
+  .footer-section p,
+  .footer-section a {
+    font-size: 0.6rem;
+    line-height: 1.2;
+    margin-bottom: 2px;
+  }
+
+  .footer-bottom p {
+    font-size: 0.55rem;
+  }
 }
