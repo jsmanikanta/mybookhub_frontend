@@ -303,7 +303,7 @@ function HomePage() {
               }
             }}
           >
-            <img src="../public/images/PK BANNER.png" alt="PrintKart Banner" />
+            <img src="/images/PK BANNER.png" alt="PrintKart Banner" />
           </div>
         </section>
         <br />
