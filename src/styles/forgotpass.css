@@ -24,11 +24,11 @@
 }
 .resetpw-title {
   font-weight: 800;
-  color: #d7a78f;
+  color: rgb(107, 107, 148);
   margin-bottom: 8px;
 }
 .resetpw-message {
-  color: #d7a78f;
+  color: rgb(107, 107, 148);
   font-size: 15px;
   margin-bottom: 24px;
 }
@@ -36,7 +36,7 @@
   width: 100%;
   padding: 12px;
   margin: 10px 0 18px 0;
-  border: 1px solid #d7a78f;
+  border: 1px solid rgb(107, 107, 148);
   border-radius: 12px;
   outline: none;
   font-size: 16px;
@@ -44,7 +44,7 @@
   transition: border-color 0.3s;
 }
 .resetpw-input:focus {
-  border-color: #d7a78f;
+  border-color: rgb(107, 107, 148);
 }
 .resetpw-error {
   background: #ffeaea;
@@ -56,8 +56,8 @@
   border: 1px solid #fa585866;
 }
 .resetpw-success {
-  background: #d7a78f;
-  color: #d7a78f;
+  background: rgb(107, 107, 148);
+  color: rgb(107, 107, 148);
   padding: 9px 0;
   border-radius: 9px;
   font-size: 15px;
@@ -67,19 +67,19 @@
 .resetpw-btn {
   width: 100%;
   padding: 12px 0;
-  background: #d7a78f;
+  background: rgb(107, 107, 148);
   color: #fff;
   font-size: 17px;
   font-weight: 600;
   border: none;
   border-radius: 12px;
   cursor: pointer;
-  box-shadow: 0 2px 8px #d7a78f;
+  box-shadow: 0 2px 8px rgb(107, 107, 148);
   margin-top: 6px;
   transition: background 0.2s;
 }
 .resetpw-btn:disabled {
-  background: #d7a78f;
+  background: rgb(107, 107, 148);
   cursor: not-allowed;
 }
 .resetpw-back {

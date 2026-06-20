@@ -116,6 +116,20 @@ const BuyBooks = () => {
     }
   }, [token]);
 
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 200) {
+        document.body.classList.add("categories-scrolled");
+      } else {
+        document.body.classList.remove("categories-scrolled");
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   const fetchWishlist = async () => {
     try {
       setWishlistBusy(true);

@@ -40,7 +40,7 @@ function BottomNav() {
       </button>
 
       <button
-        className={`nav-item ${isActive("/my-book") ? "active" : ""}`}
+        className={`nav-item ${isActive("/mybooks") ? "active" : ""}`}
         onClick={() => navigate("/mybooks")}
         aria-label="My book"
       >
@@ -58,8 +58,8 @@ function BottomNav() {
       </button>
 
       <button
-        className={`nav-item ${isActive("/all-categories") ? "active" : ""}`}
-        onClick={cat}
+        className={`nav-item ${isActive("/categories") ? "active" : ""}`}
+        onClick={() => navigate("/categories")}
         aria-label="Category"
       >
         <img src="/images/category-icon.png" alt="Category" />
