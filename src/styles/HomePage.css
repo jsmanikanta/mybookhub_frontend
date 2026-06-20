@@ -483,16 +483,14 @@
     display: none;
   }
 
-  .quick-card {
-    flex: 0 0 auto;
-    width: 94px;
-    min-width: 94px;
-    max-width: 94px;
-    height: 128px;
-    min-height: 128px;
-    max-height: 128px;
-    padding: 8px 6px;
-    border-radius: 14px;
+ .quick-card {
+    width: 85px;
+    min-width: 85px;
+    max-width: 85px;
+
+    height: 100px;
+    min-height: 110px;
+    max-height: 110px;
   }
 
   .quick-image-wrap {

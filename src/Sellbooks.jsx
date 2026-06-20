@@ -143,7 +143,6 @@ const fetchPincodeDetails = async (pincode) => {
 };
 
 export default function SellBooks() {
-  
   const navigate = useNavigate();
 
   // ✅ keep location as string (your backend schema expects String)
@@ -187,7 +186,7 @@ export default function SellBooks() {
     const loc = buildLocationString(locationInputs);
     setFormData((prev) => ({ ...prev, location: loc }));
   }, [locationInputs]);
-  
+
   useEffect(() => {
     const pin = normalizeStr(locationInputs.pincode);
     setPinError("");
@@ -485,7 +484,7 @@ export default function SellBooks() {
       ) : (
         <form className="sellbooks-form" onSubmit={handleSubmit}>
           {/* PHOTO */}
-          <div className="form-section">
+          <div className="form-section photo-section">
             <h3>
               Book Photo <span className="required">*</span>
             </h3>
@@ -493,7 +492,7 @@ export default function SellBooks() {
               <label className="upload-label">
                 <div className="upload-icon">📸</div>
                 <div className="upload-text">
-                  Click to upload or drag & drop
+                  Upload or drag & drop
                   <div className="upload-hint">PNG, JPG(Max 5MB)</div>
                 </div>
                 <input
@@ -521,7 +520,7 @@ export default function SellBooks() {
           </div>
 
           {/* BASIC */}
-          <div className="form-section">
+          <div className="form-section basic-section">
             <h3>Basic Information</h3>
             <div className="form-row">
               <div className="form-group">
@@ -589,7 +588,7 @@ export default function SellBooks() {
           </div>
 
           {/* CATEGORY */}
-          <div className="form-section">
+          <div className="form-section category-section">
             <h3>Category & Condition</h3>
             <div className="form-row">
               <div className="form-group">
@@ -678,12 +677,9 @@ export default function SellBooks() {
           </div>
 
           {/* DESCRIPTION */}
-          <div className="form-section">
+          <div className="form-section description-section">
             <h3>Description</h3>
             <div className="form-group">
-              <label>
-                Description <span className="required">*</span>
-              </label>
               <textarea
                 name="description"
                 value={formData.description}
@@ -700,7 +696,7 @@ export default function SellBooks() {
           </div>
 
           {/* ✅ LOCATION (PINCODE AUTO DETECT) */}
-          <div className="form-section">
+          <div className="form-section location-section">
             <h3>Location</h3>
 
             <div className="form-group">
@@ -718,17 +714,6 @@ export default function SellBooks() {
               {errors.address && (
                 <span className="error">{errors.address}</span>
               )}
-            </div>
-
-            <div className="form-group">
-              <label>Landmark (optional)</label>
-              <input
-                type="text"
-                name="landmark"
-                value={locationInputs.landmark}
-                onChange={handleLocationChange}
-                placeholder="Near temple / bus stop etc"
-              />
             </div>
 
             <div className="form-row">

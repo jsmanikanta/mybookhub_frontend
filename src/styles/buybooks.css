@@ -85,12 +85,18 @@ body,
 ========================= */
 .top-categories-wrapper {
   position: sticky;
-  top: 40px;
-  z-index: 99;
-  background: #f6f6f6;
   margin-bottom: 8px;
   margin-top: 8px;
   padding-top: 0;
+  min-height: 130px;
+  transition: min-height 0.25s ease;
+  position: sticky;
+  top: 60px; /* exactly search bar height */
+  z-index: 999;
+  background: #f6f6f6;
+}
+body.categories-scrolled .top-categories-wrapper {
+  min-height: 100px;
 }
 
 .top-categories {
@@ -100,10 +106,10 @@ body,
   overflow-y: hidden;
   padding: 0;
   margin: 0;
-  align-items: flex-start;
   scrollbar-width: none;
   -ms-overflow-style: none;
   scroll-behavior: smooth;
+  align-items: center;
 }
 
 .top-categories::-webkit-scrollbar {
@@ -192,22 +198,37 @@ body,
   max-width: 110px;
   word-break: break-word;
 }
+.top-category-card,
+.top-category-image-box,
+.top-category-name,
+.top-categories-wrapper {
+  transition: all 0.25s ease;
+}
+
 body.categories-scrolled .top-category-card {
-  min-width: 100px;
-  max-width: 100px;
-  padding: 6px;
+  min-width: 110px;
+  max-width: 110px;
+  height: 90px;
+
+  padding: 8px;
   border-radius: 14px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 body.categories-scrolled .top-category-image-box {
-  width: 40px;
-  height: 40px;
+  width: 38px;
+  height: 38px;
   margin-bottom: 4px;
 }
 
 body.categories-scrolled .top-category-name {
   font-size: 9px;
-  line-height: 1.1;
+  line-height: 1.2;
+  text-align: center;
 }
 
 .top-category-card,
@@ -595,11 +616,12 @@ body.categories-scrolled .top-category-name {
   .buybooks-page {
     padding: 10px 10px 96px;
   }
-
   .buybooks-topbar {
-    gap: 8px;
-    margin-bottom: 6px;
-    padding-bottom: 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    height: 60px;
+    background: #f6f6f6;
   }
 
   .search-input {

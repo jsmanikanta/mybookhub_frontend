@@ -128,14 +128,6 @@ function Signup() {
                 <option value="vendor">Vendor</option>
               </select>
 
-              {/* ✅ Optional */}
-              <input
-                type="date"
-                name="birthday"
-                value={inputs.birthday}
-                onChange={handleChange}
-              />
-
               {/* ✅ Mandatory */}
               <input
                 type="password"
